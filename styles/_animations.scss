@@ -1,0 +1,30 @@
+$outAnimation: out 0.5s ease-in-out 0.5s 1 normal;
+$inAnimation: in 0.5s ease-in-out 0s 1 normal;
+
+@keyframes out {
+  0% {
+    opacity: 1;
+    pointer-events: all;
+    touch-action: all;
+  }
+
+  100% {
+    opacity: 0;
+    pointer-events: none;
+    touch-action: none;
+  }
+}
+
+@keyframes in {
+  0% {
+    opacity: 0;
+    pointer-events: none;
+    touch-action: none;
+  }
+
+  100% {
+    opacity: 1;
+    pointer-events: all;
+    touch-action: all;
+  }
+}

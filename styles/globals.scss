@@ -1,0 +1,13 @@
+@use './loading';
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body,
+canvas {
+  height: 100vh;
+  width: 100vw;
+}
