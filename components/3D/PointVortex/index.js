@@ -1,6 +1,7 @@
 import { shaderMaterial } from '@react-three/drei';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import React, { useEffect, useMemo, useRef } from 'react';
+import { Vector2 } from 'three';
 import { vertexShader, fragmentShader } from './shaders';
 
 const VortexMaterial = shaderMaterial(
@@ -18,6 +19,7 @@ const VortexMaterial = shaderMaterial(
 );
 
 extend({ VortexMaterial });
+const tempV2 = new Vector2();
 
 const PointVortex = ({ count = 1000 }) => {
   const ref = useRef();
@@ -30,13 +32,13 @@ const PointVortex = ({ count = 1000 }) => {
     for (let i = 0; i < count; i++) {
       let x = Math.random() - 0.5;
       let y = Math.random() - 0.5;
-      let z = -2;
+      let z = 0;
 
       p.push(x, y, z);
     }
 
     return new Float32Array(p);
-  }, []);
+  }, [count]);
 
   const speed = useMemo(() => {
     let s = [];
@@ -46,7 +48,7 @@ const PointVortex = ({ count = 1000 }) => {
     }
 
     return new Float32Array(s);
-  }, []);
+  }, [count]);
 
   useEffect(() => {
     ref.current.material.uViewport = [viewport.width, viewport.height];
@@ -55,7 +57,9 @@ const PointVortex = ({ count = 1000 }) => {
   useFrame(({ clock, mouse }) => {
     if (ref.current && ref.current.material) {
       ref.current.material.uTime = clock.elapsedTime * 0.2 + 100;
-      ref.current.material.uMouse = [mouse.x, mouse.y];
+
+      tempV2.lerp(mouse, 0.1);
+      ref.current.material.uMouse = tempV2;
     }
   });
 

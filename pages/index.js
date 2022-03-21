@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Loading from '../components/Loading';
-import Experiments from '../components/Experiments';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 
 export default function Home() {
   const [progress, setProgress] = useState(0);
@@ -11,8 +11,12 @@ export default function Home() {
     setProgress(1);
   }, []);
 
+  const Experiments = dynamic(() => import('../components/Experiments'), {
+    ssr: false,
+  });
+
   return (
-    <div>
+    <div style={{ height: '100vh', width: '100vw' }}>
       <Head>
         <title>UNDER CONSTRUCTION</title>
         <meta property='og:url' content='http://lab.john-beresford.com/' />
@@ -24,6 +28,7 @@ export default function Home() {
         <meta property='og:image:height' content='630' /> */}
         <meta name='theme-color' content='#ff9e9e' />
       </Head>
+
       <Loading progress={progress} setLoaded={setLoaded} />
       <Experiments />
     </div>

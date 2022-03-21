@@ -6,12 +6,11 @@ const Loading = ({ progress, setLoaded }) => {
   const handleClick = useCallback(() => {
     ref.current.classList.add('out');
     setLoaded(true);
-  }, []);
+  }, [setLoaded]);
 
   useEffect(() => {
     const handleAnimationEnd = (e) => {
       if (e.animationName === 'out' && e.target === ref.current) {
-        console.log(e);
         ref.current.style.display = 'none';
       }
     };

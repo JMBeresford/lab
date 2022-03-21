@@ -1,4 +1,5 @@
 @use './loading';
+@use './experiments';
 
 * {
   box-sizing: border-box;
@@ -6,8 +7,7 @@
   margin: 0;
 }
 
-body,
-canvas {
+body {
   height: 100vh;
   width: 100vw;
 }
