@@ -1,17 +1,17 @@
+import useStore from '@/helpers/store';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-const Loading = ({ progress, setLoaded }) => {
+const Loading = ({ progress }) => {
   const ref = useRef();
 
   const handleClick = useCallback(() => {
     ref.current.classList.add('out');
-    setLoaded(true);
-  }, [setLoaded]);
+  }, []);
 
   useEffect(() => {
     const handleAnimationEnd = (e) => {
       if (e.animationName === 'out' && e.target === ref.current) {
-        ref.current.style.display = 'none';
+        useStore.setState({ loaded: true });
       }
     };
 
@@ -31,15 +31,13 @@ const Loading = ({ progress, setLoaded }) => {
         </div>
 
         <div className='loadbar'>
-          <p className={progress === 1 ? 'out' : ''}>
-            {parseInt(progress * 100)}%
-          </p>
+          <p className={progress >= 100 ? 'out' : ''}>{parseInt(progress)}%</p>
           <div
-            className={`bar ${progress === 1 ? 'out' : ''}`}
-            style={{ transform: `scaleX(${progress})` }}
+            className={`bar ${progress >= 100 ? 'out' : ''}`}
+            style={{ transform: `scaleX(${progress / 100})` }}
           />
           <button
-            className={`${progress === 1 ? 'in' : ''}`}
+            className={`${progress >= 100 ? 'in' : ''}`}
             onClick={handleClick}
           >
             enter

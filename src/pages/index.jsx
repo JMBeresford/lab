@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Loading from '@/components/dom/Loading';
 import dynamic from 'next/dynamic';
+import { useProgress } from '@react-three/drei';
+import useStore from '@/helpers/store';
 
 const Experiments = dynamic(() => import('@/components/canvas/Experiments'), {
   ssr: false,
@@ -8,14 +10,11 @@ const Experiments = dynamic(() => import('@/components/canvas/Experiments'), {
 
 // dom components goes here
 const DOM = () => {
-  const [progress, setProgress] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+  const loaded = useStore((state) => state.loaded);
 
-  useEffect(() => {
-    setProgress(1);
-  }, []);
+  const { progress } = useProgress();
 
-  return <Loading progress={progress} setLoaded={setLoaded} />;
+  return <>{!loaded && <Loading progress={progress} />}</>;
 };
 
 // canvas components goes here
