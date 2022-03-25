@@ -23,6 +23,7 @@ const ExperimentImage = ({ experiment, id }) => {
 
   useEffect(() => {
     ref.current.material.depthTest = false;
+    ref.current.material.depthWrite = false;
     ref.current.material.transparent = true;
   }, []);
 
@@ -63,13 +64,14 @@ const ExperimentImage = ({ experiment, id }) => {
         color='black'
         textAlign='center'
         fontSize={0.135}
-        maxWidth={1}
+        maxWidth={0.9}
         fillOpacity={opacity}
         strokeOpacity={opacity}
-        outlineWidth={'30%'}
-        outlineColor={'white'}
-        outlineBlur={'100%'}
+        outlineWidth={'20%'}
+        outlineColor='white'
+        outlineBlur={'20%'}
         outlineOpacity={opacity}
+        position={[0, 0, 0.1]}
       />
     </group>
   );

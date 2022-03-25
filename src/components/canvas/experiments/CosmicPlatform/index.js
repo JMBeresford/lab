@@ -3,6 +3,7 @@ import { Stats } from '@react-three/drei';
 import HeroModel from './3d/HeroModel';
 import Sky from './3d/Sky';
 import { Suspense, useEffect } from 'react';
+import useStore from '@/helpers/store';
 
 const Experiment = () => {
   const camera = useThree((state) => state.camera);
@@ -20,13 +21,17 @@ const Experiment = () => {
     gl.setClearColor('#000000', 0);
   }, [gl]);
 
+  useEffect(() => {
+    useStore.setState({ experimentLoaded: true });
+  }, []);
+
   return (
     <>
       <Suspense fallback={null}>
         <HeroModel />
       </Suspense>
       <Sky position={[0, 0, -20]} />
-      <Stats />
+      {/* <Stats /> */}
     </>
   );
 };

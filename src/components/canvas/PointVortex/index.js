@@ -1,19 +1,19 @@
 import { shaderMaterial } from '@react-three/drei';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Vector2 } from 'three';
+import { NeverDepth, Vector2 } from 'three';
 import { vertexShader, fragmentShader } from './shaders';
 
 const VortexMaterial = shaderMaterial(
   {
     uTime: { value: 0 },
+    uDpr: { value: 1 },
     uViewport: { value: [1, 1] },
     uMouse: { value: [0, 0] },
   },
   vertexShader,
   fragmentShader,
   (m) => {
-    m.transparent = true;
     m.depthTest = false;
   }
 );
@@ -32,7 +32,7 @@ const PointVortex = ({ count = 1000 }) => {
     for (let i = 0; i < count; i++) {
       let x = Math.random() - 0.5;
       let y = Math.random() - 0.5;
-      let z = 0;
+      let z = -5;
 
       p.push(x, y, z);
     }
@@ -51,14 +51,19 @@ const PointVortex = ({ count = 1000 }) => {
   }, [count]);
 
   useEffect(() => {
-    ref.current.material.uViewport = [viewport.width, viewport.height];
+    ref.current.material.uniforms.uViewport.value = [
+      viewport.width,
+      viewport.height,
+    ];
+
+    ref.current.material.uniforms.uDpr.value = viewport.dpr;
   }, [viewport]);
 
   useFrame(({ clock, mouse }) => {
+    tempV2.lerp(mouse, 0.1);
     if (ref.current && ref.current.material) {
       ref.current.material.uTime = clock.elapsedTime * 0.2 + 100;
 
-      tempV2.lerp(mouse, 0.1);
       ref.current.material.uMouse = tempV2;
     }
   });

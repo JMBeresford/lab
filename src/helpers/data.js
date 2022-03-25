@@ -7,11 +7,13 @@ export default function getData() {
       name: 'Oceanic Horizon',
       page: 'OceanicHorizon',
       image: oceanicHorizonImage.src,
+      hudColor: '#000000',
     },
     {
       name: 'Cosmic Platform',
       page: 'CosmicPlatform',
       image: cosmicplatformImage.src,
+      hudColor: '#ffffff',
     },
   ];
 }

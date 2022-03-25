@@ -25,6 +25,30 @@
   max-height: 100vh;
   max-width: 100vw;
 
+  .loadingIndicator {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+
+    display: grid;
+    place-items: center;
+
+    background-color: white;
+    color: black;
+
+    opacity: 1;
+
+    font-family: $monospace;
+
+    transition: opacity 0.5s ease-in-out;
+
+    &.out {
+      pointer-events: none;
+      touch-action: none;
+      opacity: 0;
+    }
+  }
+
   .hud {
     position: fixed;
     left: 2rem;

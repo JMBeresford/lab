@@ -4,7 +4,12 @@ const useStore = create(() => {
   return {
     router: null,
     dom: null,
-    loaded: false,
+
+    // indicate if the experience has been entered, so remove loading page component
+    experienceStarted: false,
+
+    // indicate if the selected experience has been loaded, so can dismiss the loading indicator
+    experimentLoaded: false,
   };
 });
 

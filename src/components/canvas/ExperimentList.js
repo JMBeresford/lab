@@ -4,8 +4,10 @@ import ExperimentImage from './ExperimentImage';
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { lerp } from 'three/src/math/MathUtils';
-import useStore from '@/helpers/store';
 import getData from '@/helpers/data';
+
+const IMAGE_SIZE = 4;
+const MAX_COLUNMS = 4;
 
 const ExperimentList = () => {
   const viewport = useThree((state) => state.viewport);
@@ -14,7 +16,12 @@ const ExperimentList = () => {
   const touchY = useRef(0);
 
   const size = useMemo(() => {
-    let width = Math.min(Math.max(Math.floor(viewport.width * 0.9), 1), 12);
+    let maxWidth = MAX_COLUNMS * IMAGE_SIZE;
+
+    let width = Math.min(
+      Math.max(Math.floor(viewport.width * 0.9), 1),
+      maxWidth
+    );
     let height = Math.max(Math.floor(viewport.height * 0.6), 1);
 
     return { width, height };
@@ -61,11 +68,11 @@ const ExperimentList = () => {
   }, []);
 
   useEffect(() => {
-    let columns = Math.floor(size.width / 3);
+    let columns = Math.floor(size.width / IMAGE_SIZE);
     let rows = ref.current.children.length;
 
     // height of entire list in threejs units
-    let h = (rows / columns - 1) * 3;
+    let h = (rows / columns - 1) * IMAGE_SIZE;
 
     h = Math.max(0, h);
 
@@ -98,7 +105,13 @@ const ExperimentList = () => {
       centerAnchor
     >
       {data.map((experiment, idx) => (
-        <Box key={idx} width={3} height={3} padding={1} centerAnchor>
+        <Box
+          key={idx}
+          width={IMAGE_SIZE}
+          height={IMAGE_SIZE}
+          padding={1}
+          centerAnchor
+        >
           <ExperimentImage experiment={experiment} id={idx} />
         </Box>
       ))}

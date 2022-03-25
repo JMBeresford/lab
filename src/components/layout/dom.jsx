@@ -8,10 +8,7 @@ const Dom = ({ children }) => {
   }, []);
 
   return (
-    <div
-      style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
-      ref={ref}
-    >
+    <div style={{ position: 'absolute', inset: 0 }} ref={ref}>
       {children}
     </div>
   );

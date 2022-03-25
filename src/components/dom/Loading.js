@@ -11,7 +11,7 @@ const Loading = ({ progress }) => {
   useEffect(() => {
     const handleAnimationEnd = (e) => {
       if (e.animationName === 'out' && e.target === ref.current) {
-        useStore.setState({ loaded: true });
+        useStore.setState({ experienceStarted: true });
       }
     };
 

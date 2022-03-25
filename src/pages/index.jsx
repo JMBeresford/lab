@@ -10,11 +10,11 @@ const Experiments = dynamic(() => import('@/components/canvas/Experiments'), {
 
 // dom components goes here
 const DOM = () => {
-  const loaded = useStore((state) => state.loaded);
+  const experienceStarted = useStore((state) => state.experienceStarted);
 
   const { progress } = useProgress();
 
-  return <>{!loaded && <Loading progress={progress} />}</>;
+  return <>{!experienceStarted && <Loading progress={progress} />}</>;
 };
 
 // canvas components goes here

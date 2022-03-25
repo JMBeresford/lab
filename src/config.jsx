@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Script from 'next/script';
 
 const titleDefault = 'React Three Next Starter';
 const url = 'https://lab.john-beresford.com/';
@@ -77,6 +78,23 @@ const Header = ({ title = titleDefault }) => {
         Be sure validate your Twitter card markup on the documentation site. */}
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:site' content='@onirenaud' />
+        {/* Global site tag (gtag.js) - Google Analytics */}
+
+        <Script
+          strategy='afterInteractive'
+          src='https://www.googletagmanager.com/gtag/js?id=G-77KMRW6WVC'
+        />
+        <Script
+          strategy='afterInteractive'
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag() {
+                dataLayer.push(arguments)
+              }
+              gtag('js', new Date()); gtag('config', 'G-77KMRW6WVC');`,
+          }}
+        />
       </Head>
     </>
   );

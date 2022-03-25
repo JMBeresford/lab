@@ -1,9 +1,10 @@
-import { Suspense, useEffect } from 'react';
-import { useThree } from '@react-three/fiber';
+import { Suspense, useEffect, useRef } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import PointVortex from './PointVortex';
 import ExperimentList from './ExperimentList';
 import { Text } from '@react-three/drei';
 import fontPath from '@/fonts/MajorMonoDisplay.ttf';
+import { Vector2 } from 'three';
 
 const HeaderText = () => {
   return (
@@ -17,9 +18,13 @@ const HeaderText = () => {
   );
 };
 
+const tempV2 = new Vector2();
+
 const Experiments = () => {
   const gl = useThree((state) => state.gl);
   const camera = useThree((state) => state.camera);
+
+  const group = useRef();
 
   useEffect(() => {
     gl.setClearColor('#fafaff');
@@ -30,12 +35,22 @@ const Experiments = () => {
     camera.rotation.set(0, 0, 0);
   }, [camera]);
 
+  useFrame(({ mouse }) => {
+    tempV2.lerp(mouse, 0.1);
+    if (group.current) {
+      group.current.rotation.x = -tempV2.y * 0.1;
+      group.current.rotation.y = tempV2.x * 0.1;
+    }
+  });
+
   return (
     <>
       <PointVortex count={500} />
       <Suspense fallback={null}>
-        <HeaderText />
-        <ExperimentList />
+        <group ref={group}>
+          <HeaderText />
+          <ExperimentList />
+        </group>
       </Suspense>
     </>
   );
