@@ -161,12 +161,7 @@ export default function Model(props) {
 
   return (
     <>
-      <group
-        ref={group}
-        {...props}
-        dispose={null}
-        onClick={() => console.log(pointsRef.current)}
-      >
+      <group ref={group} {...props} dispose={null}>
         <mesh
           geometry={nodes.letters.geometry}
           ref={letters}

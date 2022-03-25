@@ -26,7 +26,7 @@ const Controls = () => {
     return () => {
       document.removeEventListener('pointerdown', handleMouseDown);
     };
-  }, [setDragging]);
+  }, [setDragging, mouse]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -49,7 +49,7 @@ const Controls = () => {
     return () => {
       document.removeEventListener('pointermove', handleMouseMove);
     };
-  }, [dragging]);
+  }, [dragging, mouse, rotation]);
 
   useEffect(() => {
     const handleMouseUp = (e) => {
