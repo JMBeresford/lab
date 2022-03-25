@@ -7,13 +7,15 @@ import fontPath from '@/fonts/MajorMonoDisplay.ttf';
 import { Vector2 } from 'three';
 
 const HeaderText = () => {
+  const size = useThree((state) => state.size);
+
   return (
     <Text
       text='experiments'
       font={fontPath}
       position={[0, 3.25, -0.5]}
       color='black'
-      fontSize={0.75}
+      fontSize={size.width >= 768 ? 0.75 : 0.5}
     />
   );
 };
