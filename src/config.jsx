@@ -4,7 +4,7 @@ import Script from 'next/script';
 const titleDefault = 'React Three Next Starter';
 const url = 'https://lab.john-beresford.com/';
 const description =
-  'John Beresford is a multi-disciplinary designer. These are some of his experiments.';
+  'John Beresford is a multi-disciplinary designer and developer. These are some of his experimental works.';
 const author = 'John Beresford';
 
 const Header = ({ title = titleDefault }) => {
@@ -34,7 +34,7 @@ const Header = ({ title = titleDefault }) => {
         <meta name='og:title' content={title} />
         <meta name='og:type' content='site' />
         <meta name='og:url' content={url} />
-        <meta name='og:image' content={'/icons/share.png'} />
+        <meta name='og:image' content={`${url}/icons/share.jpg`} />
         <meta name='og:site_name' content={title} />
         <meta name='og:description' content={description} />
 
@@ -76,8 +76,10 @@ const Header = ({ title = titleDefault }) => {
       Twitter Summary card
         documentation: https://dev.twitter.com/cards/getting-started
         Be sure validate your Twitter card markup on the documentation site. */}
-        <meta name='twitter:card' content='summary' />
-        <meta name='twitter:site' content='@onirenaud' />
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta name='twitter:title' content={title} />
+        <meta name='twitter:description' content={description} />
+        <meta name='twitter:image' content={`${url}/icons/share.png`} />
         {/* Global site tag (gtag.js) - Google Analytics */}
 
         <Script
