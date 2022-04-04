@@ -1,5 +1,8 @@
 import Head from 'next/head';
 import Script from 'next/script';
+// import { useEffect } from 'react';
+// import { useRouter } from 'next/router';
+// import * as ga from '../lib/ga';
 
 const titleDefault = 'React Three Next Starter';
 const url = 'https://lab.john-beresford.com/';
@@ -8,6 +11,20 @@ const description =
 const author = 'John Beresford';
 
 const Header = ({ title = titleDefault }) => {
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   const handleRouteChange = (url) => {
+  //     ga.pageview(url);
+  //   };
+
+  //   router.events.on('routeChangeComplete', handleRouteChange);
+
+  //   return () => {
+  //     router.events.off('routeChangeComplete', handleRouteChange);
+  //   };
+  // }, [router.events]);
+
   return (
     <>
       <Head>
@@ -80,23 +97,6 @@ const Header = ({ title = titleDefault }) => {
         <meta name='twitter:title' content={title} />
         <meta name='twitter:description' content={description} />
         <meta name='twitter:image' content={`${url}icons/share.png`} />
-        {/* Global site tag (gtag.js) - Google Analytics */}
-
-        <Script
-          strategy='afterInteractive'
-          src='https://www.googletagmanager.com/gtag/js?id=G-77KMRW6WVC'
-        />
-        <Script
-          strategy='afterInteractive'
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag() {
-                dataLayer.push(arguments)
-              }
-              gtag('js', new Date()); gtag('config', 'G-77KMRW6WVC');`,
-          }}
-        />
       </Head>
     </>
   );
