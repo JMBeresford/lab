@@ -26,6 +26,8 @@
     "@react-three/flex": "^0.7.0",
     "@react-three/postprocessing": "^2.2.5",
     "babel-plugin-glsl": "^1.0.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-webpack-plugin": "^3.1.1",
     "glsl-random": "^0.0.5",
     "gsap": "^3.9.1",
     "next": "^12.1.0",

@@ -166,9 +166,7 @@ float cnoise(vec4 P)
   return 2.2 * n_xyzw;
 }
 
-#ifndef FBM_OCTAVES
-#define FBM_OCTAVES 6
-#endif
+uniform int uFbmOctaves;
 
 #ifndef FBM_NOISE_FNC
 #define FBM_NOISE_FNC(POS_UV) cnoise(POS_UV)
@@ -199,7 +197,7 @@ float fbm(in vec4 pos) {
     float amplitud = FBM_AMPLITUD_INITIAL;
 
     // Loop of octaves
-    for (int i = 0; i < FBM_OCTAVES; i++) {
+    for (int i = 0; i < uFbmOctaves; i++) {
         value += amplitud * FBM_NOISE_FNC(pos);
         pos *= FBM_SCALE_SCALAR;
         amplitud *= FBM_AMPLITUD_SCALAR;
@@ -213,6 +211,7 @@ float fbm(in vec4 pos) {
 varying vec3 vPos;
 
 uniform float uTime;
+
 
 void main() {
   float d = distance(SUN_POS, vPos);
