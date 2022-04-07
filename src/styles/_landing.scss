@@ -1,0 +1,33 @@
+#portfolioLink {
+  position: fixed;
+  top: 5%;
+  left: 5%;
+
+  z-index: 5;
+
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0);
+  color: black;
+  border: solid 2px black;
+  text-decoration: none;
+
+  &:hover::after {
+    clip-path: inset(0 0 0 0);
+  }
+
+  &::after {
+    position: absolute;
+    inset: -2%;
+    content: 'My Portfolio';
+
+    display: grid;
+    place-items: center;
+
+    color: white;
+    background-color: black;
+
+    clip-path: inset(0 100% 0 0);
+
+    transition: clip-path 0.15s ease-in-out;
+  }
+}

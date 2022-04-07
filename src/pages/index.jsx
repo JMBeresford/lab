@@ -3,6 +3,7 @@ import Loading from '@/components/dom/Loading';
 import dynamic from 'next/dynamic';
 import { useProgress } from '@react-three/drei';
 import useStore from '@/helpers/store';
+import PortfolioLink from '@/components/dom/PortfolioLink';
 
 const Experiments = dynamic(() => import('@/components/canvas/Experiments'), {
   ssr: false,
@@ -14,7 +15,12 @@ const DOM = () => {
 
   const { progress } = useProgress();
 
-  return <>{!experienceStarted && <Loading progress={progress} />}</>;
+  return (
+    <>
+      {!experienceStarted && <Loading progress={progress} />}
+      <PortfolioLink />
+    </>
+  );
 };
 
 // canvas components goes here

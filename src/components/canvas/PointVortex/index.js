@@ -1,7 +1,7 @@
 import { shaderMaterial } from '@react-three/drei';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { NeverDepth, Vector2 } from 'three';
+import { Vector2 } from 'three';
 import { vertexShader, fragmentShader } from './shaders';
 
 const VortexMaterial = shaderMaterial(
