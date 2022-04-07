@@ -9,5 +9,8 @@ void main() {
 
   vec3 color = mix(vec3(0.0), vec3(0.902, 0.0, 0.4196), smoothstep(0.0, 1.0, vMouseDist * 0.35));
 
-  gl_FragColor = vec4(color, opacity);
+  // pseudo-transparency
+  color = mix(vec3(1.0), color, opacity * 0.85);
+
+  gl_FragColor = vec4(color, 1.0);
 }
