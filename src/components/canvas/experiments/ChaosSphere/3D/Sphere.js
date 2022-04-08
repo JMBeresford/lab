@@ -49,8 +49,11 @@ const Sphere = () => {
       case 3: {
         return 1024;
       }
-      default: {
+      case 2: {
         return 512;
+      }
+      default: {
+        return 256;
       }
     }
   }, [GPU.tier]);
@@ -58,15 +61,15 @@ const Sphere = () => {
   useEffect(() => {
     switch (GPU.tier) {
       case 3: {
-        ref.current.material.uFbmOctaves = 6;
-        break;
-      }
-      case 2: {
-        ref.current.material.uFbmOctaves = 4;
-        break;
-      }
-      case 2: {
         ref.current.material.uFbmOctaves = 3;
+        break;
+      }
+      case 2: {
+        ref.current.material.uFbmOctaves = 2;
+        break;
+      }
+      default: {
+        ref.current.material.uFbmOctaves = 1;
         break;
       }
     }
