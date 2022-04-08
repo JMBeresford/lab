@@ -47,7 +47,7 @@ const Sphere = () => {
   const resolution = useMemo(() => {
     switch (GPU.tier) {
       case 3: {
-        return 1024;
+        return 512;
       }
       case 2: {
         return 512;
