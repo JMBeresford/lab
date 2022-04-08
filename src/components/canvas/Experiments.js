@@ -15,7 +15,7 @@ const HeaderText = () => {
       font={fontPath}
       position={[0, 3.25, -0.5]}
       color='black'
-      fontSize={size.width >= 768 ? 0.75 : 0.5}
+      fontSize={size.width >= 768 ? 0.75 : 0.375}
     />
   );
 };

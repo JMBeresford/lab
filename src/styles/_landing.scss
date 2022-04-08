@@ -31,3 +31,17 @@
     transition: clip-path 0.15s ease-in-out;
   }
 }
+
+@media (max-width: 768px) {
+  #portfolioLink {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border: none;
+
+    text-decoration: underline;
+  }
+}
