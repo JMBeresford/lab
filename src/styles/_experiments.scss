@@ -61,8 +61,26 @@
 
     font-family: $monospace;
 
-    a {
-      color: black;
+    .back {
+      position: relative;
+      width: max-content;
+
+      &:hover .backdrop {
+        clip-path: inset(0 0 0 0);
+      }
+
+      .backdrop {
+        pointer-events: none;
+        touch-action: none;
+        z-index: -1;
+
+        position: absolute;
+        inset: -20% -2%;
+
+        clip-path: inset(0 100% 0 0);
+
+        transition: clip-path 0.15s ease-in-out;
+      }
     }
   }
 }

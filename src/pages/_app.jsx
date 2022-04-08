@@ -47,7 +47,7 @@ function App({ Component, pageProps = { title: 'index' } }) {
 
   return (
     <>
-      <Header title={pageProps.title} />
+      <Header title={pageProps.title} experiment={pageProps.experiment} />
 
       {/* Global site tag (gtag.js) - Google Analytics */}
       <Script

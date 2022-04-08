@@ -17,9 +17,15 @@ const DOM = ({ experiment }) => {
           <div className='bar' />
         </div>
         <div className='hud' style={{ color: experiment.hudColor }}>
-          <Link href={'/'}>
-            <a style={{ color: experiment.hudColor }}>back to experiments</a>
-          </Link>
+          <div className='back'>
+            <Link href={'/'}>
+              <a style={{ color: experiment.hudColor }}>back to experiments</a>
+            </Link>
+            <div
+              className='backdrop'
+              style={{ backgroundColor: experiment.themeColor }}
+            />
+          </div>
           <h1 style={{ pointerEvents: 'none', touchAction: 'none' }}>
             {experiment.name.toLowerCase()}
           </h1>

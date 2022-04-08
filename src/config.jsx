@@ -1,8 +1,5 @@
 import Head from 'next/head';
-import Script from 'next/script';
-// import { useEffect } from 'react';
-// import { useRouter } from 'next/router';
-// import * as ga from '../lib/ga';
+import { useMemo } from 'react';
 
 const titleDefault = 'React Three Next Starter';
 const url = 'https://lab.john-beresford.com/';
@@ -10,20 +7,14 @@ const description =
   'John Beresford is a multi-disciplinary designer and developer. These are some of his experimental works.';
 const author = 'John Beresford';
 
-const Header = ({ title = titleDefault }) => {
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   const handleRouteChange = (url) => {
-  //     ga.pageview(url);
-  //   };
-
-  //   router.events.on('routeChangeComplete', handleRouteChange);
-
-  //   return () => {
-  //     router.events.off('routeChangeComplete', handleRouteChange);
-  //   };
-  // }, [router.events]);
+const Header = ({ title = titleDefault, experiment }) => {
+  const banner = useMemo(() => {
+    if (experiment) {
+      return `${url}img/experiments/${experiment.url}.png`;
+    } else {
+      return `${url}icons/share.jpg`;
+    }
+  }, [experiment]);
 
   return (
     <>
@@ -51,7 +42,7 @@ const Header = ({ title = titleDefault }) => {
         <meta name='og:title' content={title} />
         <meta name='og:type' content='site' />
         <meta name='og:url' content={url} />
-        <meta name='og:image' content={`${url}icons/share.jpg`} />
+        <meta name='og:image' content={banner} />
         <meta name='og:site_name' content={title} />
         <meta name='og:description' content={description} />
 
@@ -96,7 +87,7 @@ const Header = ({ title = titleDefault }) => {
         <meta name='twitter:card' content='summary_large_image' />
         <meta name='twitter:title' content={title} />
         <meta name='twitter:description' content={description} />
-        <meta name='twitter:image' content={`${url}icons/share.png`} />
+        <meta name='twitter:image' content={banner} />
       </Head>
     </>
   );
