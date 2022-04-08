@@ -10,7 +10,7 @@ const author = 'John Beresford';
 const Header = ({ title = titleDefault, experiment }) => {
   const banner = useMemo(() => {
     if (experiment) {
-      return `${url}img/experiments/${experiment.url}.png`;
+      return `${url}img/experiments/${experiment.page.toLowerCase()}.png`;
     } else {
       return `${url}icons/share.jpg`;
     }
