@@ -55,7 +55,19 @@ const Sphere = () => {
       },
     });
 
-  const resolution = useMemo(() => (GPU.tier > 1 ? 1024 : 512), [GPU]);
+  const resolution = useMemo(() => {
+    switch (GPU.tier) {
+      case 3: {
+        return 512;
+      }
+      case 2: {
+        return 512;
+      }
+      default: {
+        return 128;
+      }
+    }
+  }, [GPU]);
 
   useEffect(() => {
     switch (GPU.tier) {
