@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Loading from '@/components/dom/Loading';
 import dynamic from 'next/dynamic';
-import { useProgress } from '@react-three/drei';
+import { useProgress, Stats } from '@react-three/drei';
 import useStore from '@/helpers/store';
 import PortfolioLink from '@/components/dom/PortfolioLink';
 
@@ -11,13 +11,21 @@ const Experiments = dynamic(() => import('@/components/canvas/Experiments'), {
 
 // dom components goes here
 const DOM = () => {
-  const experienceStarted = useStore((state) => state.experienceStarted);
+  const { experienceStarted, debug } = useStore();
 
   const { progress } = useProgress();
+
+  useEffect(() => {
+    if (window.location.hash === '#debug') {
+      useStore.setState({ debug: true });
+    }
+  }, []);
 
   return (
     <>
       {!experienceStarted && <Loading progress={progress} />}
+
+      {debug && <Stats />}
       <PortfolioLink />
     </>
   );

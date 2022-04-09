@@ -4,6 +4,7 @@ const useStore = create(() => {
   return {
     router: null,
     dom: null,
+    debug: false,
 
     // indicate if the experience has been entered, so remove loading page component
     experienceStarted: false,

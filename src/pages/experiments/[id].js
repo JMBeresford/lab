@@ -6,7 +6,13 @@ import useStore from '@/helpers/store';
 
 // dom components goes here
 const DOM = ({ experiment }) => {
-  const experimentLoaded = useStore((state) => state.experimentLoaded);
+  const { experimentLoaded, debug } = useStore();
+
+  useEffect(() => {
+    if (window.location.hash === '#debug') {
+      useStore.setState({ debug: true });
+    }
+  }, []);
 
   return (
     <>
