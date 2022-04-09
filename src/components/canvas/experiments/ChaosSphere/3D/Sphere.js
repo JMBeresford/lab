@@ -2,7 +2,7 @@ import { shaderMaterial, useDetectGPU } from '@react-three/drei';
 import { extend, useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import { Color } from 'three';
+import { Color, DoubleSide } from 'three';
 import { vertexShader, fragmentShader } from './shaders/sphere';
 
 const SphereMaterial = shaderMaterial(
@@ -20,6 +20,7 @@ const SphereMaterial = shaderMaterial(
   fragmentShader,
   (m) => {
     m.defines.USE_TANGENT = '';
+    m.side = DoubleSide;
   }
 );
 
@@ -37,8 +38,8 @@ const Sphere = () => {
         max: 2,
         step: 0.1,
       },
-      light1Color: '#cc568f',
-      light2Color: '#54ba56',
+      light1Color: '#ff4ba2',
+      light2Color: '#54ba84',
       sphereColor: '#162052',
       detail: {
         value: 0.4,
@@ -48,25 +49,13 @@ const Sphere = () => {
       },
       speed: {
         value: 1,
-        min: 0.1,
+        min: 0,
         max: 2,
         step: 0.1,
       },
     });
 
-  const resolution = useMemo(() => {
-    switch (GPU.tier) {
-      case 3: {
-        return 512;
-      }
-      case 2: {
-        return 512;
-      }
-      default: {
-        return 256;
-      }
-    }
-  }, [GPU]);
+  const resolution = useMemo(() => (GPU.tier > 1 ? 1024 : 512), [GPU]);
 
   useEffect(() => {
     switch (GPU.tier) {

@@ -67,8 +67,9 @@ void main() {
 
   vec3 newNormal = normalize(cross(newp1 - pos, newp2 - pos));
 
-  // vec3 viewDir = normalize(cameraPosition - pos);
-  // float fresnel = 1.0 + dot(viewDir, tangent.xyz);
+  vec3 viewDir = normalize(pos - cameraPosition);
+  float fresnel = (1.0 + dot(viewDir, newNormal)) * 1.2;
+  fresnel = pow(max(0.0, fresnel), 10.0);
 
   vec3 col = uColor;
 
@@ -77,6 +78,11 @@ void main() {
 
   col += light1 * uLight1Color;
   col += light2 * uLight2Color;
+  col += fresnel * vec3(1.0);
+  
+  // col = mix(col, uLight1Color, light1);
+  // col = mix(col, uLight2Color, light2);
+  // col = mix(col, vec3(1.0), fresnel);
 
   vColor = col;
 
