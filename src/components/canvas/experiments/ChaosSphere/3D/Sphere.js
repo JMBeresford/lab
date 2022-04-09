@@ -1,22 +1,26 @@
 import { shaderMaterial, useDetectGPU } from '@react-three/drei';
 import { extend, useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { Color } from 'three';
 import { vertexShader, fragmentShader } from './shaders/sphere';
 
 const SphereMaterial = shaderMaterial(
   {
     uTime: 0,
-    uAmp: [0.375, 0.375, 0.375],
+    uAmp: 0.4,
     uLight1Color: new Color(),
     uLight2Color: new Color(),
     uColor: new Color(),
-    uDetail: [1, 1, 1],
+    uDetail: 0.2,
     uFbmOctaves: 4,
+    uResolution: [1, 1],
   },
   vertexShader,
-  fragmentShader
+  fragmentShader,
+  (m) => {
+    m.defines.USE_TANGENT = '';
+  }
 );
 
 extend({ SphereMaterial });
@@ -25,22 +29,28 @@ const Sphere = () => {
   const ref = useRef();
   const GPU = useDetectGPU();
 
-  const { amplitude, light1Color, light2Color, sphereColor, detail } =
+  const { amplitude, light1Color, light2Color, sphereColor, detail, speed } =
     useControls({
       amplitude: {
-        value: { x: 0.5, y: 0.7, z: 1.9 },
-        x: { min: 0, max: 2, step: 0.1 },
-        y: { min: 0, max: 2, step: 0.1 },
-        z: { min: 0, max: 2, step: 0.1 },
+        value: 0.4,
+        min: 0,
+        max: 2,
+        step: 0.1,
       },
-      light1Color: '#7f56cc',
+      light1Color: '#cc568f',
       light2Color: '#54ba56',
-      sphereColor: '#36579a',
+      sphereColor: '#162052',
       detail: {
-        value: { x: 1, y: 0.3, z: 6.5 },
-        x: { min: 0, max: 100, step: 0.1 },
-        y: { min: 0, max: 100, step: 0.1 },
-        z: { min: 0, max: 100, step: 0.1 },
+        value: 0.4,
+        min: 0,
+        max: 1,
+        step: 0.05,
+      },
+      speed: {
+        value: 1,
+        min: 0.1,
+        max: 2,
+        step: 0.1,
       },
     });
 
@@ -56,12 +66,12 @@ const Sphere = () => {
         return 256;
       }
     }
-  }, [GPU.tier]);
+  }, [GPU]);
 
   useEffect(() => {
     switch (GPU.tier) {
       case 3: {
-        ref.current.material.uFbmOctaves = 3;
+        ref.current.material.uFbmOctaves = 2;
         break;
       }
       case 2: {
@@ -73,7 +83,7 @@ const Sphere = () => {
         break;
       }
     }
-  });
+  }, [GPU]);
 
   useEffect(() => {
     ref.current.material.uniforms.uLight1Color.value.setStyle(light1Color);
@@ -87,14 +97,22 @@ const Sphere = () => {
     ref.current.material.uniforms.uColor.value.setStyle(sphereColor);
   }, [sphereColor]);
 
+  useLayoutEffect(() => {
+    ref.current.geometry.computeTangents();
+  }, []);
+
   useFrame(({ clock }) => {
-    ref.current.material.uTime = clock.elapsedTime * 0.25;
+    ref.current.material.uTime = clock.elapsedTime * 0.25 * speed;
   });
 
   return (
     <mesh ref={ref}>
       <sphereBufferGeometry args={[3, resolution, resolution]} />
-      <sphereMaterial uAmp={amplitude} uDetail={detail} />
+      <sphereMaterial
+        uAmp={amplitude}
+        uDetail={detail * 0.5}
+        uResolution={[resolution, resolution]}
+      />
     </mesh>
   );
 };
