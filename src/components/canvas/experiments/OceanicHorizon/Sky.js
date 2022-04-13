@@ -25,11 +25,11 @@ const Sky = () => {
   useEffect(() => {
     switch (GPU.tier) {
       case 3: {
-        ref.current.material.uniforms.uFbmOctaves.value = 8;
+        ref.current.material.uniforms.uFbmOctaves.value = 6;
         break;
       }
       case 2: {
-        ref.current.material.uniforms.uFbmOctaves.value = 5;
+        ref.current.material.uniforms.uFbmOctaves.value = 3;
         break;
       }
       case 1: {
