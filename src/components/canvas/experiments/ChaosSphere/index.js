@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
 import useStore from '@/helpers/store';
 import { OrbitControls } from '@react-three/drei';
@@ -26,7 +26,12 @@ const ChaosSphere = () => {
       <Sphere />
       <Sky />
 
-      <OrbitControls enablePan={false} maxDistance={13} minDistance={6} />
+      <OrbitControls
+        enablePan={false}
+        maxDistance={13}
+        minDistance={6}
+        enableDamping={true}
+      />
     </>
   );
 };
