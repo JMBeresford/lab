@@ -3,6 +3,7 @@ import getData from '@/helpers/data';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import useStore from '@/helpers/store';
+import { Stats } from '@react-three/drei';
 
 // dom components goes here
 const DOM = ({ experiment }) => {
@@ -17,6 +18,7 @@ const DOM = ({ experiment }) => {
   return (
     <>
       <div className='experiment'>
+        {debug && <Stats />}
         <div className={`loadingIndicator ${experimentLoaded ? 'out' : ''}`}>
           <h3>loading experiment</h3>
           <h1>{experiment.name.toUpperCase()}</h1>

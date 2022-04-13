@@ -8,7 +8,7 @@ const LCanvas = ({ children }) => {
       gl={{ alpha: true }}
       camera={{ position: [0, 0, 5], rotation: [0, 0, 0] }}
     >
-      <Preload all />
+      {/* <Preload all /> */}
       {children}
     </Canvas>
   );

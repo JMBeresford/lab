@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.17.0",
-    "@react-three/drei": "^8.16.5",
+    "@react-three/drei": "^8.20.2",
     "@react-three/fiber": "^7.0.26",
     "@react-three/flex": "^0.7.0",
     "@react-three/postprocessing": "^2.2.5",
@@ -34,6 +34,7 @@
     "gsap": "^3.9.1",
     "leva": "^0.9.23",
     "next": "^12.1.0",
+    "postprocessing": "^6.26.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-spring": "^9.4.4",

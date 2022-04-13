@@ -4,8 +4,10 @@ uniform float uAmp;
 uniform float uDetail;
 uniform int uFbmOctaves;
 uniform vec2 uResolution;
+uniform vec2 uLightIntensity;
 uniform vec3 uLight1Color;
 uniform vec3 uLight2Color;
+uniform vec3 uFresnelColor;
 uniform vec3 uColor;
 
 varying vec3 vColor;
@@ -13,13 +15,14 @@ varying vec3 vColor;
 #define PI 3.1415926535897932384626433832795
 #define FBM_INIT_AMP 0.5
 #define FBM_INIT_FREQ 1.0
-#define FBM_GAIN 0.5
-#define FBM_LACUNARITY 2.0
+#define FBM_GAIN 0.675
+#define FBM_LACUNARITY 4.0
 
 #define LIGHT1POS vec3(-3.0, 5.0, 2.0)
 #define LIGHT2POS vec3(3.0, -5.0, -2.0)
 
-#pragma glslify: snoise = require(glsl-noise/simplex/4d)
+#pragma glslify: cnoise = require(glsl-noise/classic/4d)
+// #pragma glslify: blendLighten = require(glsl-blend/lighten)
 
 float fbm(vec4 p) {
   float f = 0.0;
@@ -27,7 +30,7 @@ float fbm(vec4 p) {
   float a = FBM_INIT_AMP;
   float fq = FBM_INIT_FREQ;
   for (int i = 0; i < uFbmOctaves; i++) {
-    f += a * snoise(p * fq);
+    f += a * cnoise(p * fq);
     a *= FBM_GAIN;
     fq *= FBM_LACUNARITY;
   }
@@ -73,16 +76,16 @@ void main() {
 
   vec3 col = uColor;
 
-  float light1 = max(dot(newNormal, normalize(LIGHT1POS)), 0.0);
-  float light2 = max(dot(newNormal, normalize(LIGHT2POS)), 0.0);
+  float light1 = max(dot(newNormal, normalize(LIGHT1POS)), 0.0) * uLightIntensity.x;
+  float light2 = max(dot(newNormal, normalize(LIGHT2POS)), 0.0) * uLightIntensity.y;
 
   col += light1 * uLight1Color;
   col += light2 * uLight2Color;
-  col += fresnel * vec3(1.0);
+  col += fresnel * uFresnelColor;
   
-  // col = mix(col, uLight1Color, light1);
-  // col = mix(col, uLight2Color, light2);
-  // col = mix(col, vec3(1.0), fresnel);
+  // col = blendLighten(col, uLight1Color, light1);
+  // col = blendLighten(col, uLight2Color, light2);
+  // col = blendLighten(col, uFresnelColor, fresnel);
 
   vColor = col;
 
