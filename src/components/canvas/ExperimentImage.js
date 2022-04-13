@@ -52,7 +52,6 @@ const ExperimentImage = ({ experiment, id }) => {
         alt={`${experiment.name} preview`}
         onPointerOver={() => {
           setHovered(true);
-          router.prefetch(`/experiments/${experiment.page}`);
         }}
         onPointerOut={() => setHovered(false)}
         onClick={() => router.push(`/experiments/${experiment.page}`)}

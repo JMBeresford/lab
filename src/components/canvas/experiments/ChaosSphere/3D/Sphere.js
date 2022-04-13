@@ -4,7 +4,6 @@ import { useControls } from 'leva';
 import { useEffect, useMemo, useRef } from 'react';
 import { Color } from 'three';
 import { vertexShader, fragmentShader } from './shaders/sphere';
-import { BloomPass, UnrealBloomPass } from 'three-stdlib';
 
 const SphereMaterial = shaderMaterial(
   {
@@ -26,12 +25,11 @@ const SphereMaterial = shaderMaterial(
   }
 );
 
-extend({ SphereMaterial, UnrealBloomPass, BloomPass });
+extend({ SphereMaterial });
 
 const Sphere = () => {
   const ref = useRef();
-  const { gl } = useThree();
-  const GPU = useDetectGPU({ glContext: gl.getContext() });
+  const GPU = useDetectGPU();
 
   const { amplitude, sphereColor, detail, speed } = useControls('Sphere', {
     amplitude: {
@@ -134,7 +132,9 @@ const Sphere = () => {
   }, []);
 
   useFrame(({ clock }) => {
-    ref.current.material.uTime = clock.elapsedTime * 0.25 * speed;
+    if (ref.current) {
+      ref.current.material.uTime = clock.elapsedTime * 0.25 * speed;
+    }
   });
 
   return (
