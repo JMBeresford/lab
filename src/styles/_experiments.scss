@@ -82,5 +82,33 @@
         transition: clip-path 0.15s ease-in-out;
       }
     }
+
+    .codeBtn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      cursor: pointer;
+
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+
+      display: grid;
+      place-items: center;
+
+      transform: scale(1);
+
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.125);
+      }
+
+      a {
+        font-family: $sans-serif;
+        font-weight: light;
+        text-decoration: none;
+      }
+    }
   }
 }
