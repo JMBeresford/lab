@@ -10,7 +10,7 @@ export default function getData() {
       page: 'ChaosSphere',
       image: chaossphereImage.src,
       hudColor: '#ffffff',
-      themeColor: '#6633aa',
+      themeColor: '#3e3e3e',
     },
     {
       name: 'Oceanic Horizon',
