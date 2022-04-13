@@ -47,8 +47,8 @@ const Experiments = () => {
 
   return (
     <>
-      <PointVortex count={500} />
       <Suspense fallback={null}>
+        <PointVortex count={500} />
         <group ref={group}>
           <HeaderText />
           <ExperimentList />
