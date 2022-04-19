@@ -74,8 +74,6 @@ const ExperimentList = () => {
     // height of entire list in threejs units
     let h = Math.ceil(rows / columns - 1) * IMAGE_SIZE;
 
-    console.log(h);
-
     h = Math.max(0, h);
 
     setHeight(h);
