@@ -4,7 +4,12 @@ const useStore = create(() => {
   return {
     router: null,
     dom: null,
+
+    // shows FPS monitor
     debug: false,
+    // hides UI elements in the experiment for recording/screenshots
+    showcase: false,
+    // hide config panel
     hideLeva: false,
 
     // indicate if the experience has been entered, so remove loading page component
