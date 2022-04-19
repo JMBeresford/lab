@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import ExperimentImage from './ExperimentImage';
 
 import { useFrame, useThree } from '@react-three/fiber';
-import { lerp } from 'three/src/math/MathUtils';
+import { damp, lerp } from 'three/src/math/MathUtils';
 import getData from '@/helpers/data';
 
 const IMAGE_SIZE = 4;
@@ -72,24 +72,27 @@ const ExperimentList = () => {
     let rows = ref.current.children.length;
 
     // height of entire list in threejs units
-    let h = (rows / columns - 1) * IMAGE_SIZE;
+    let h = Math.ceil(rows / columns - 1) * IMAGE_SIZE;
+
+    console.log(h);
 
     h = Math.max(0, h);
 
     setHeight(h);
   }, [size]);
 
-  useFrame(() => {
+  useFrame((state, delta) => {
     if (scroll.current < 0) {
       scroll.current = 0;
     } else if (scroll.current > height) {
       scroll.current = height;
     }
 
-    ref.current.position.y = lerp(
+    ref.current.position.y = damp(
       ref.current.position.y,
       -0.25 + scroll.current,
-      0.1
+      4,
+      delta
     );
   });
 
