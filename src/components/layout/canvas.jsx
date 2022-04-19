@@ -6,6 +6,7 @@ const LCanvas = ({ children }) => {
     <Canvas
       mode='concurrent'
       gl={{ alpha: true }}
+      dpr={[1, 2]}
       camera={{ position: [0, 0, 5], rotation: [0, 0, 0] }}
     >
       {/* <Preload all /> */}

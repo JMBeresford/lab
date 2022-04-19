@@ -15,7 +15,7 @@ const nextConfig = {
   webpack(config, { webpack, dev, isServer }) {
     // audio support
     config.module.rules.push({
-      test: /\.(ogg|mp3|wav|mpe?g|ttf|glb|gltf)$/i,
+      test: /\.(ogg|mp3|wav|mpe?g|ttf|glb|gltf|hdr)$/i,
       exclude: config.exclude,
       use: [
         {

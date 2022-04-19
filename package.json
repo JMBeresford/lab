@@ -24,7 +24,7 @@
     "@react-three/drei": "^8.20.2",
     "@react-three/fiber": "^7.0.26",
     "@react-three/flex": "^0.7.0",
-    "@react-three/postprocessing": "^2.2.5",
+    "@react-three/postprocessing": "^2.3.2",
     "babel-plugin-glsl": "^1.0.0",
     "eslint-config-react-app": "^7.0.0",
     "eslint-webpack-plugin": "^3.1.1",
@@ -39,8 +39,8 @@
     "react-dom": "^17.0.2",
     "react-spring": "^9.4.4",
     "sass": "^1.49.9",
-    "three": "^0.138.3",
-    "three-stdlib": "^2.8.8",
+    "three": "^0.139.2",
+    "three-stdlib": "^2.9.1",
     "zustand": "^3.7.1"
   },
   "devDependencies": {

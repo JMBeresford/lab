@@ -1539,14 +1539,14 @@
   dependencies:
     "yoga-layout-prebuilt" "^1.9.6"
 
-"@react-three/postprocessing@^2.2.5":
-  "integrity" "sha512-Zf9b4g8h9sGC8Njc0J8UuWVHIM8c0hb+aHRC2zwQXEuMpiJ7hsxW2d2EX3o7K19gYJpPNmjGnO4sBcfD7mUjMg=="
-  "resolved" "https://registry.npmjs.org/@react-three/postprocessing/-/postprocessing-2.2.5.tgz"
-  "version" "2.2.5"
+"@react-three/postprocessing@^2.3.2":
+  "integrity" "sha512-e1veVao9XR3BP/J6OdvbR7yQq7d3lpOQuKvSQJ9LWLhPziBzHeRazU63cIwf5Dh4qy0TuxswmgWKxRn8Sxp79Q=="
+  "resolved" "https://registry.npmjs.org/@react-three/postprocessing/-/postprocessing-2.3.2.tgz"
+  "version" "2.3.2"
   dependencies:
-    "postprocessing" "6.24.1"
+    "postprocessing" "6.26.3"
     "react-merge-refs" "^1.1.0"
-    "three-stdlib" "^2.8.6"
+    "three-stdlib" "^2.8.11"
 
 "@rollup/plugin-node-resolve@^7.1.1":
   "integrity" "sha512-RxtSL3XmdTAE2byxekYLnx+98kEUOrPHF/KRVjLH+DEIHy6kjIw7YINQzn+NXiH/NTrQLAwYs0GWB+csWygA9Q=="
@@ -2256,20 +2256,10 @@
   "resolved" "https://registry.npmjs.org/callsites/-/callsites-3.1.0.tgz"
   "version" "3.1.0"
 
-"caniuse-lite@^1.0.30001280":
-  "integrity" "sha512-t28SKa7g6kiIQi6NHeOcKrOrGMzCRrXvlasPwWC26TH2QNdglgzQIRUuJ0cR3NeQPH+5jpuveeeSFDLm2zbkEw=="
-  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001284.tgz"
-  "version" "1.0.30001284"
-
-"caniuse-lite@^1.0.30001283":
-  "integrity" "sha512-csfD/GpHMqgEL3V3uIgosvh+SVIQvCh43SNu9HRbP1lnxkKm1kjDG4f32PP571JplkLjfS+mg2p1gxR7MYrrIA=="
-  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001301.tgz"
-  "version" "1.0.30001301"
-
-"caniuse-lite@^1.0.30001286", "caniuse-lite@^1.0.30001297":
-  "integrity" "sha512-+MXEMczJ4FuxJAUp0jvAl6Df0NI/OfW1RWEE61eSmzS7hw6lz4IKutbhbXendwq8BljfFuHtu26VWsg4afQ7Ng=="
-  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001307.tgz"
-  "version" "1.0.30001307"
+"caniuse-lite@^1.0.30001280", "caniuse-lite@^1.0.30001283", "caniuse-lite@^1.0.30001286", "caniuse-lite@^1.0.30001297":
+  "integrity" "sha512-10T30NYOEQtN6C11YGg411yebhvpnC6Z102+B95eAsN0oB6KUs01ivE8u+G6FMIRtIrVlYXhL+LUwQ3/hXwDWw=="
+  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001332.tgz"
+  "version" "1.0.30001332"
 
 "chalk@^2.0.0", "chalk@^2.1.0", "chalk@^2.4.2":
   "integrity" "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="
@@ -4857,15 +4847,10 @@
     "picocolors" "^1.0.0"
     "source-map-js" "^1.0.1"
 
-"postprocessing@^6.26.3":
+"postprocessing@^6.26.3", "postprocessing@6.26.3":
   "integrity" "sha512-f9VMDQSLngrdJByPjza4pNHZWoEnGFdxj6GsgqGd2+RM3PYFTCZapgpX9W/FspRUg6Is38vkUfjvLxWyfBHbhQ=="
   "resolved" "https://registry.npmjs.org/postprocessing/-/postprocessing-6.26.3.tgz"
   "version" "6.26.3"
-
-"postprocessing@6.24.1":
-  "integrity" "sha512-P11gHk5gXoxSddumWKk3Pv3MxYSWQU+rhEqPRJpLO70NOJfzmT4+80yG5hCJ0yBGUAjhzxbdF3XtRo7mHeiQZA=="
-  "resolved" "https://registry.npmjs.org/postprocessing/-/postprocessing-6.24.1.tgz"
-  "version" "6.24.1"
 
 "potpack@^1.0.1":
   "integrity" "sha512-choctRBIV9EMT9WGAZHn3V7t0Z2pMQyl0EZE6pFc/6ml3ssw7Dlf/oAOvFwjm1HVsqfQN8GfeFyJ+d8tRzqueQ=="
@@ -5789,7 +5774,7 @@
   "resolved" "https://registry.npmjs.org/three-mesh-bvh/-/three-mesh-bvh-0.5.9.tgz"
   "version" "0.5.9"
 
-"three-stdlib@^2.8.6", "three-stdlib@^2.8.8", "three-stdlib@^2.8.9":
+"three-stdlib@^2.8.11", "three-stdlib@^2.8.9", "three-stdlib@^2.9.1":
   "integrity" "sha512-e+Hyd47ssVTy2UzUfmaccB7m30qITVMdvGs/QypeGdJa3uwhw1zR9jO/ce61S65Omiy/oGDMWG8dJIZxyQ7u8w=="
   "resolved" "https://registry.npmjs.org/three-stdlib/-/three-stdlib-2.9.1.tgz"
   "version" "2.9.1"
@@ -5805,10 +5790,10 @@
     "potpack" "^1.0.1"
     "zstddec" "^0.0.2"
 
-"three@^0.138.3", "three@>= 0.102.0 < 0.138.0", "three@>= 0.107.0 < 0.140.0", "three@>= 0.123.0", "three@>=0.103.0", "three@>=0.122.0", "three@>=0.126", "three@>=0.133", "three@>=0.136.0", "three@>=0.137":
-  "integrity" "sha512-4t1cKC8gimNyJChJbaklg8W/qj3PpsLJUIFm5LIuAy/hVxxNm1ru2FGTSfbTSsuHmC/7ipsyuGKqrSAKLNtkzg=="
-  "resolved" "https://registry.npmjs.org/three/-/three-0.138.3.tgz"
-  "version" "0.138.3"
+"three@^0.139.2", "three@>= 0.107.0 < 0.140.0", "three@>= 0.123.0", "three@>=0.103.0", "three@>=0.122.0", "three@>=0.126", "three@>=0.133", "three@>=0.136.0", "three@>=0.137":
+  "integrity" "sha512-gV7q7QY8rogu7HLFZR9cWnOQAUedUhu2WXAnpr2kdXZP9YDKsG/0ychwQvWkZN5PlNw9mv5MoCTin6zNTXoONg=="
+  "resolved" "https://registry.npmjs.org/three/-/three-0.139.2.tgz"
+  "version" "0.139.2"
 
 "through@^2.3.6":
   "integrity" "sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU="
