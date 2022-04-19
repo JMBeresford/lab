@@ -2,7 +2,7 @@ import useStore from '@/helpers/store';
 import { OrbitControls } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { Selection } from '@react-three/postprocessing';
-import { useControls } from 'leva';
+import { Leva, useControls } from 'leva';
 import React, { useEffect, useRef, useState } from 'react';
 import Lightsaber from './3D/Lightsaber';
 import Sky from './3D/Sky';
@@ -11,19 +11,24 @@ import Post from './Post';
 
 const Experiment = () => {
   const { camera, size } = useThree();
+  const { debug } = useStore();
 
   useEffect(() => {
     camera.position.set(0, 0, size.width > 1000 ? 6 : 10);
     camera.lookAt(0, 0, 0);
   }, [camera, size]);
 
-  const { color } = useControls('Saber', {
-    color: { value: '#00ff00' },
-  });
-
   useEffect(() => {
     useStore.setState({ experimentLoaded: true });
   }, []);
+
+  useEffect(() => {
+    if (!debug) useStore.setState({ hideLeva: true });
+
+    return () => {
+      useStore.setState({ hideLeva: false });
+    };
+  }, [debug]);
 
   return (
     <>
@@ -31,8 +36,8 @@ const Experiment = () => {
       <Text />
 
       <Selection>
-        <Post color={color} />
-        <Lightsaber color={color} />
+        <Post />
+        <Lightsaber />
       </Selection>
 
       <OrbitControls

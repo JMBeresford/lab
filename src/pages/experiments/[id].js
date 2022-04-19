@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Suspense, useEffect } from 'react';
 import useStore from '@/helpers/store';
 import { Stats } from '@react-three/drei';
+import { Leva } from 'leva';
 
 const LoadingExperiment = () => {
   useEffect(() => {
@@ -19,7 +20,7 @@ const LoadingExperiment = () => {
 
 // dom components goes here
 const DOM = ({ experiment }) => {
-  const { experimentLoaded, debug } = useStore();
+  const { experimentLoaded, debug, hideLeva } = useStore();
 
   useEffect(() => {
     if (window.location.hash === '#debug') {
@@ -68,6 +69,7 @@ const DOM = ({ experiment }) => {
           </div>
         </div>
       </div>
+      <Leva hidden={hideLeva} />
     </>
   );
 };

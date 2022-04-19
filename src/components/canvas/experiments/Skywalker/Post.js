@@ -10,10 +10,14 @@ import { useControls } from 'leva';
 import { BlendFunction, KernelSize, Resolution } from 'postprocessing';
 import { Suspense, useMemo } from 'react';
 
-const Post = ({ color = '#00ff00' }) => {
+const Post = () => {
   const { size, gl } = useThree();
 
   const GPU = useDetectGPU({ glContext: gl.getContext() });
+
+  const { color } = useControls('Saber', {
+    color: { value: '#00ff00' },
+  });
 
   const scaleFactor = useMemo(() => {
     switch (GPU.tier) {
