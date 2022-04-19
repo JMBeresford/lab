@@ -20,11 +20,21 @@ const LoadingExperiment = () => {
 
 // dom components goes here
 const DOM = ({ experiment }) => {
-  const { experimentLoaded, debug, hideLeva } = useStore();
+  const { experimentLoaded, debug, hideLeva, showcase } = useStore();
 
   useEffect(() => {
-    if (window.location.hash === '#debug') {
+    if (window.location.hash.includes('debug')) {
       useStore.setState({ debug: true });
+    } else {
+      useStore.setState({ debug: false });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.location.hash.includes('showcase')) {
+      useStore.setState({ showcase: true });
+    } else {
+      useStore.setState({ showcase: false });
     }
   }, []);
 
@@ -37,7 +47,10 @@ const DOM = ({ experiment }) => {
           <h1>{experiment.name.toUpperCase()}</h1>
           <div className='bar' />
         </div>
-        <div className='hud' style={{ color: experiment.hudColor }}>
+        <div
+          className='hud'
+          style={{ color: experiment.hudColor, opacity: showcase ? 0 : 1 }}
+        >
           <div className='back'>
             <Link href={'/'}>
               <a style={{ color: experiment.hudColor }}>back to experiments</a>
