@@ -1,5 +1,5 @@
 import { useThree } from '@react-three/fiber';
-import { Stats } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import HeroModel from './3d/HeroModel';
 import Sky from './3d/Sky';
 import { Suspense, useEffect } from 'react';
@@ -30,8 +30,13 @@ const Experiment = () => {
       <Suspense fallback={null}>
         <HeroModel />
       </Suspense>
+      <OrbitControls
+        maxDistance={50}
+        minDistance={10}
+        enablePan={false}
+        enableDamping={true}
+      />
       <Sky position={[0, 0, -20]} />
-      {/* <Stats /> */}
     </>
   );
 };

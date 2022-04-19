@@ -33,16 +33,16 @@ float hash2_1(vec2 p) {
 float star(vec2 uv, float flare) {
   float d = length(uv);
 
-  float brightness = pow(0.01/d, 2.0);
-  float rays = max(0.0, 1.0 - abs(uv.x * uv.y * 1000.0));
-  brightness += rays*flare;
+  float brightness = pow(0.1/d, 2.0);
+  // float rays = max(0.0, 1.0 - abs(uv.x * uv.y * 1000.0));
+  // brightness += rays*flare;
 
-  uv *= rot(PI * 0.25);
+  // uv *= rot(PI * 0.25);
 
-  rays = max(0.0, 1.0 - abs(uv.x * uv.y * 1000.0));
-  brightness += rays*0.3*flare;
+  // rays = max(0.0, 1.0 - abs(uv.x * uv.y * 1000.0));
+  // brightness += 0.3*flare;
 
-  brightness *= smoothstep(0.7, 0.8, 1.0 - d);
+  // brightness *= smoothstep(0.7, 0.8, 1.0 - d);
   
   return brightness;
 }
@@ -84,10 +84,10 @@ void main() {
 
   vec3 color = uColor * shadow;
 
-  vec3 stars = starLayer(uv * 100.0 + sin(uTime * 0.01), uColor3) * smoothstep(.05,.5,noise) * shadow;
+  vec3 stars = starLayer(uv * 30.0 + sin(uTime * 0.01), uColor3) * smoothstep(.05,.5,noise) * shadow;
   stars += starLayer(uv * 20.0, uColor3) * smoothstep(0.5, 1.0, noise) * shadow;
 
-  stars += starLayer(uv * 100.0 + cos(uTime * 0.01), vec3(0.7,0.65,1.0)) * smoothstep(0.05, 0.5, antiNoise) * shadow;
+  stars += starLayer(uv * 45.0 + cos(uTime * 0.01), vec3(0.7,0.65,1.0)) * smoothstep(0.05, 0.5, antiNoise) * shadow;
   
   vec3 clouds = uColor2 * smoothstep(0.0, 0.9, noise) * shadow;
   clouds += uColor4 * smoothstep(0.0, 0.9, antiNoise) * shadow;

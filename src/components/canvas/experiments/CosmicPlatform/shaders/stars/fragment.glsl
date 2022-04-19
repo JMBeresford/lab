@@ -81,7 +81,7 @@ void main() {
     float scale = mix(20.,0.5,depth);
 
     float fade = max(0.0, depth * smoothstep(1.0, 0.9, depth) - 0.4);
-    color += starLayer(uv * scale + i * 360.0) * fade;
+    color += starLayer(uv * scale + i * 10.0) * fade;
   }
 
 
