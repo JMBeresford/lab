@@ -7,6 +7,13 @@ import placeholderImage from '@/img/icon.png';
 export default function getData() {
   return [
     {
+      name: 'S Rank Jutsu',
+      page: 'SRankJutsu',
+      image: placeholderImage.src,
+      hudColor: '#ffffff',
+      themeColor: '#3e3e3e',
+    },
+    {
       name: 'Skywalker',
       page: 'Skywalker',
       image: skywalkerImage.src,
