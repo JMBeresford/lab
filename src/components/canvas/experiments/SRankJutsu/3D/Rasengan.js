@@ -2,17 +2,8 @@ import { shaderMaterial } from '@react-three/drei';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { useControls } from 'leva';
 import React, { useMemo, useRef } from 'react';
-import {
-  AdditiveBlending,
-  BackSide,
-  Color,
-  DoubleSide,
-  NormalBlending,
-  SubtractiveBlending,
-  Vector2,
-} from 'three';
+import { Color, Vector2 } from 'three';
 import Noise from './Noise';
-import Particles from './Particles';
 import { vertexShader, fragmentShader } from './shaders/rasengan';
 
 const RasenganMaterial = shaderMaterial(
@@ -28,6 +19,10 @@ const RasenganMaterial = shaderMaterial(
     uFresnelMultiplier: 1.2,
     uFresnelOffset: 1,
     uFresnelExponent: 10,
+
+    uInnerFresnelMultipler: 1,
+    uInnerFresnelOffset: 1,
+    uInnerFresnelExponent: 10,
   },
   vertexShader,
   fragmentShader,
@@ -40,20 +35,28 @@ extend({ RasenganMaterial });
 
 const Rasengan = () => {
   const ref = useRef();
+  const lightRef = useRef();
   const { size, viewport } = useThree();
 
-  const { coreColor, coreSize } = useControls('Core', {
-    coreColor: { value: '#95e7f5' },
-    coreSize: { value: 0.23, min: 0, max: 0.5, step: 0.01 },
+  const {
+    color,
+    colorHighlight,
+    sizeHighlight,
+    powerHighlight,
+    offsetHighlight,
+  } = useControls('Rasengan', {
+    color: { value: '#95e7f5' },
+    colorHighlight: { value: '#95e7f5' },
+    sizeHighlight: { value: 1.2, min: 0, max: 2, step: 0.025 },
+    powerHighlight: { value: 1.5, min: 0, max: 75, step: 0.05 },
+    offsetHighlight: { value: 1.2, min: 0, max: 5, step: 0.01 },
   });
 
-  const { colorHighlight, sizeHighlight, powerHighlight, offsetHighlight } =
-    useControls('Highlight', {
-      colorHighlight: { value: '#95e7f5' },
-      sizeHighlight: { value: 1.2, min: 0, max: 2, step: 0.025 },
-      powerHighlight: { value: 1.5, min: 0, max: 20, step: 0.5 },
-      offsetHighlight: { value: 1.2, min: 0, max: 5, step: 0.1 },
-    });
+  const { density, coreExponent, coreOffset } = useControls('Core', {
+    density: { value: 5.5, min: 0, max: 10, step: 0.01 },
+    coreExponent: { value: 3.7, min: 0, max: 5, step: 0.1 },
+    coreOffset: { value: 0.9, min: 0, max: 1.25, step: 0.01 },
+  });
 
   const aspect = useMemo(() => {
     if (size.width > size.height) {
@@ -72,18 +75,26 @@ const Rasengan = () => {
       <mesh ref={ref}>
         <sphereGeometry args={[1.05, 64, 64]} />
         <rasenganMaterial
-          uCoreColor={coreColor}
+          uCoreColor={color}
           uResolution={[size.width, size.height]}
           uAspect={aspect}
-          uCoreSize={coreSize}
+          uCoreSize={density}
           uFresnelColor={colorHighlight}
           uFresnelMultiplier={sizeHighlight}
           uFresnelExponent={powerHighlight}
           uFresnelOffset={offsetHighlight}
+          uInnerFresnelExponent={coreExponent}
+          uInnerFresnelOffset={coreOffset}
         />
       </mesh>
       <Noise />
-      <Particles />
+
+      <pointLight
+        ref={lightRef}
+        position={[0, 0, 0]}
+        color={color}
+        intensity={10}
+      />
     </group>
   );
 };

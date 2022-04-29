@@ -12,7 +12,8 @@ const CurvesMaterial = shaderMaterial(
     uNoiseSize: 0,
     uResolution: new Vector2(),
     uAspect: new Vector2(),
-    uCurveColor: new Color(),
+    uCurveColor1: new Color(),
+    uCurveColor2: new Color(),
   },
   vertexShader,
   fragmentShader,
@@ -30,11 +31,15 @@ const Noise = () => {
   const ref = useRef();
   const { size, viewport } = useThree();
 
-  const { lineColor, noiseScale, noiseSize } = useControls('Noise', {
-    lineColor: { value: '#ffffff' },
-    noiseScale: { value: 1.5, min: 0, max: 5, step: 0.1 },
-    noiseSize: { value: 0.55, min: 0, max: 1, step: 0.01 },
-  });
+  const { outerColor, innerColor, noiseScale, noiseSize } = useControls(
+    'Noise',
+    {
+      outerColor: { value: '#95e7f5' },
+      innerColor: { value: '#ffffff' },
+      noiseScale: { value: 0.3, min: 0, max: 5, step: 0.1 },
+      noiseSize: { value: 0.04, min: 0, max: 1, step: 0.01 },
+    }
+  );
 
   const aspect = useMemo(() => {
     if (size.width > size.height) {
@@ -51,9 +56,10 @@ const Noise = () => {
   return (
     <>
       <mesh ref={ref}>
-        <sphereGeometry args={[1, 64, 64]} />
+        <sphereGeometry args={[1.1, 64, 64]} />
         <curvesMaterial
-          uCurveColor={lineColor}
+          uCurveColor1={outerColor}
+          uCurveColor2={innerColor}
           uResolution={[size.width, size.height]}
           uAspect={aspect}
           uNoiseScale={noiseScale}
