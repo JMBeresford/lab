@@ -1,23 +1,34 @@
 import useStore from '@/helpers/store';
-import { OrbitControls } from '@react-three/drei';
+import { Environment, OrbitControls } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useControls } from 'leva';
-import React, { useEffect, useMemo, useRef } from 'react';
-import { Color } from 'three';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import Floor from './3D/Floor';
 import Rasengan from './3D/Rasengan';
 
 const Experiment = () => {
   const ref = useRef();
 
-  const { camera, gl, viewport } = useThree();
+  const { camera, gl, viewport, scene } = useThree();
 
-  const { fogColor } = useControls('Scene', {
-    fogColor: { value: '#333338' },
-  });
+  const { fogColor } = useControls(
+    'Scene',
+    {
+      fogColor: { value: '#131317' },
+    },
+    { collapsed: true }
+  );
 
   useEffect(() => {
     useStore.setState({ experimentLoaded: true });
+  }, []);
+
+  useLayoutEffect(() => {
+    useStore.setState({ collapseLeva: true });
+
+    return () => {
+      useStore.setState({ collapseLeva: false });
+    };
   }, []);
 
   useEffect(() => {
@@ -39,7 +50,15 @@ const Experiment = () => {
       <group ref={ref}>
         <Rasengan />
         <Floor />
-        <OrbitControls enablePan={false} enableZoom={false} />
+        <Environment preset='night' />
+
+        <OrbitControls
+          enablePan={false}
+          maxDistance={4}
+          minDistance={2}
+          minPolarAngle={Math.PI / 6}
+          maxPolarAngle={Math.PI / 2}
+        />
       </group>
     </>
   );

@@ -9,8 +9,9 @@ const useStore = create(() => {
     debug: false,
     // hides UI elements in the experiment for recording/screenshots
     showcase: false,
-    // hide config panel
+    // hide/collapse config panel
     hideLeva: false,
+    collapseLeva: false,
 
     // indicate if the experience has been entered, so remove loading page component
     experienceStarted: false,
