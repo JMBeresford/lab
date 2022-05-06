@@ -51,7 +51,7 @@ const Lightsaber = (props) => {
   useCursor(hovered);
 
   const { color } = useControls('Saber', {
-    color: { value: '#00ff00' },
+    color: { value: '#43ff64' },
   });
 
   const { length } = useSpring({
