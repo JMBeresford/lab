@@ -5,7 +5,6 @@ import { useControls } from 'leva';
 import React, { useEffect, useRef } from 'react';
 import Floor from './3D/Floor';
 import Rasengan from './3D/Rasengan';
-// import Post from './Post';
 
 const Experiment = () => {
   const { camera, gl, viewport } = useThree();
@@ -39,8 +38,6 @@ const Experiment = () => {
   return (
     <>
       <fog attach='fog' args={[fogColor, 0.1, 10]} />
-
-      {/* {GPU.tier >= 1 && <Post />} */}
 
       <Rasengan />
       <Floor />
