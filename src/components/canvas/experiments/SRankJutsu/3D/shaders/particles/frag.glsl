@@ -17,5 +17,6 @@ void main() {
   color = mix(uInnerColor, uOuterColor, S(0.4, 1.0, 1.0 - vProgress));
 
   float alpha = mask * S(0.0, 0.1, uPower);
+
   gl_FragColor = vec4(color, alpha);
 }

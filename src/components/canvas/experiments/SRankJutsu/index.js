@@ -3,6 +3,7 @@ import { Environment, OrbitControls } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useControls } from 'leva';
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { ACESFilmicToneMapping, CineonToneMapping, Mesh } from 'three';
 import Floor from './3D/Floor';
 import Rasengan from './3D/Rasengan';
 
@@ -39,6 +40,10 @@ const Experiment = () => {
     }
   }, [camera, viewport]);
 
+  useLayoutEffect(() => {
+    gl.toneMapping = CineonToneMapping;
+  }, [gl]);
+
   useEffect(() => {
     gl.setClearColor(fogColor, 1);
   }, [gl, fogColor]);
@@ -50,14 +55,15 @@ const Experiment = () => {
       <group ref={ref}>
         <Rasengan />
         <Floor />
-        <Environment preset='night' />
+        <ambientLight intensity={0.25} />
+        {/* <Environment preset='night' /> */}
 
         <OrbitControls
           enablePan={false}
           maxDistance={4}
           minDistance={2}
           minPolarAngle={Math.PI / 6}
-          maxPolarAngle={Math.PI / 2}
+          maxPolarAngle={Math.PI / 2.1}
         />
       </group>
     </>

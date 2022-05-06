@@ -35,7 +35,7 @@ const Floor = () => {
       renderOrder={1}
     >
       <planeGeometry args={[50, 50]} />
-      <meshStandardMaterial
+      <meshToonMaterial
         transparent={true}
         {...textures}
         metalness={0}

@@ -1,5 +1,5 @@
 #define S smoothstep
-#define TIME_FACTOR uTime * 18.0
+#define TIME_FACTOR uTime * 9.0
 #define PI 3.1415926535897932384626433832795
 
 uniform float uTime;
@@ -7,6 +7,7 @@ uniform float uNoiseScale;
 uniform float uNoiseSize;
 uniform vec3 uCurveColor1;
 uniform vec3 uCurveColor2;
+uniform float uOpacity;
 uniform vec3 uStretch;
 
 varying vec3 vWorldPos;
@@ -61,7 +62,7 @@ void main() {
   vec3 noisePos = rotateY(TIME_FACTOR) * vWorldPos * stretch;
   noisePos.y -= TIME_FACTOR * 0.5;
 
-  vec3 modulatedPos = noisePos + snoise3(noisePos + uTime);
+  vec3 modulatedPos = noisePos + snoise3(noisePos);
 
   float lines = snoise3(modulatedPos * uNoiseScale); // * (1.0 - (vWorldPos.y + 1.0) / 2.0);
 
@@ -71,7 +72,7 @@ void main() {
 
   vec3 color = mix(uCurveColor1, uCurveColor2, lines);
 
-  float alpha = S(0.0, 0.8, lines * (1.0 - vFade));
+  float alpha = S(0.0, 1.0, lines * (1.0 - vFade) * uOpacity);
 
   gl_FragColor = vec4(color, alpha);
 }

@@ -31,7 +31,7 @@ extend({ ParticleMaterial });
 
 const AnimatedParticlesMaterial = animated('particleMaterial');
 
-const Particles = ({ count = 10000, stage }) => {
+const Particles = ({ count = 2000, stage }) => {
   const ref = useRef();
 
   const maskTex = useTexture(particleMaskImg.src);

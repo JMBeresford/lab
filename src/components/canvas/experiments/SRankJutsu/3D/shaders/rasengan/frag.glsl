@@ -64,13 +64,13 @@ void main() {
 
   float wind = snoise3(modulatedPos * uNoiseScale);
 
-  wind = S(uNoiseSize, 0.75, wind);
+  wind = S(uNoiseSize, 0.75, wind) * 0.75;
 
-  wind = clamp(wind, 0.0, 1.0);
+  // wind = clamp(wind, 0.0, 1.0);
 
   vec3 windColor = mix(uCurveColor1, uCurveColor2, wind);
 
-  color = mix(color, windColor, wind);
+  color = mix(color, windColor, max(wind - outerFresnel, 0.0));
 
   float alpha = clamp(innerFresnel + outerFresnel + wind, 0.0, 1.0);
 

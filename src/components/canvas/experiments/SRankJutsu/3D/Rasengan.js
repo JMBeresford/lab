@@ -170,7 +170,7 @@ const Rasengan = () => {
           renderOrder={1}
           position={[0, 1, -5]}
           rotation={[Math.PI / 6, 0, 0]}
-          text={`Move your\nmouse around\nin circles`}
+          text={`Move your\nmouse or finger\naround in circles`}
           fontSize={0.9}
           textAlign='center'
           // maxWidth={Math.max(viewport.width / 2.5, 3.5)}
@@ -201,7 +201,7 @@ const Rasengan = () => {
         </mesh>
 
         <Particles stage={stage} />
-        <Wind />
+        <Wind stage={stage} />
 
         <animated.pointLight
           ref={lightRef}

@@ -18,8 +18,8 @@ void main() {
   float midPoint = uInnerRadius + (radiiDiff * 0.5);
   float distFromEdges = abs(distFromCenter - midPoint);
 
-  pos.z += max(0.0, (uOuterRadius - distFromCenter) * 0.75);
-  //pos = position + (abs(snoise(position + uTime)) * 0.05) * normalize(position);
+  pos.z += max(0.0, abs(uInnerRadius - distFromCenter));
+  // pos = pos + (abs(snoise(position + uTime)) * 0.05) * normalize(position);
 
   vec4 modelPos = modelMatrix * vec4(pos, 1.0);
 
