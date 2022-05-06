@@ -1,13 +1,10 @@
 import useStore from '@/helpers/store';
 import { OrbitControls } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
-import { Selection } from '@react-three/postprocessing';
-import { Leva, useControls } from 'leva';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import Lightsaber from './3D/Lightsaber';
 import Sky from './3D/Sky';
 import Text from './3D/Text';
-import Post from './Post';
 
 const Experiment = () => {
   const { camera, size } = useThree();
@@ -22,23 +19,20 @@ const Experiment = () => {
     useStore.setState({ experimentLoaded: true });
   }, []);
 
-  useEffect(() => {
-    if (!debug) useStore.setState({ hideLeva: true });
+  // useEffect(() => {
+  //   if (!debug) useStore.setState({ hideLeva: true });
 
-    return () => {
-      useStore.setState({ hideLeva: false });
-    };
-  }, [debug]);
+  //   return () => {
+  //     useStore.setState({ hideLeva: false });
+  //   };
+  // }, [debug]);
 
   return (
     <>
       <Sky />
       <Text />
 
-      <Selection>
-        <Post />
-        <Lightsaber />
-      </Selection>
+      <Lightsaber />
 
       <OrbitControls
         enableDamping={true}

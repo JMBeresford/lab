@@ -13,7 +13,7 @@ import model from '../models/lightsaber_luke.glb';
 import vertexShader from '../shaders/saber/vert.glsl';
 import fragmentShader from '../shaders/saber/frag.glsl';
 import { extend, useFrame } from '@react-three/fiber';
-import { Color } from 'three';
+import { AdditiveBlending, Color } from 'three';
 import { Select } from '@react-three/postprocessing';
 import { useSpring, animated } from '@react-spring/three';
 import { damp } from 'three/src/math/MathUtils';
@@ -25,7 +25,12 @@ import { useControls } from 'leva';
 const SaberMaterial = shaderMaterial(
   { uColor: new Color() },
   vertexShader,
-  fragmentShader
+  fragmentShader,
+  (m) => {
+    // m.depthTest = false;
+    m.transparent = true;
+    m.blending = AdditiveBlending;
+  }
 );
 
 extend({ SaberMaterial });
@@ -160,16 +165,27 @@ const Lightsaber = (props) => {
           url={HumSound}
           autoplay={false}
         />
-        <Select name='saber' enabled>
-          <animated.mesh
-            ref={bladeRef}
-            geometry={nodes.blade.geometry}
-            position={[2.39, 0.00556, 0.00031]}
-            scale-x={length}
-          >
+        <animated.group
+          ref={bladeRef}
+          scale-x={length}
+          position={[2.39, 0.00556, 0.00031]}
+        >
+          <mesh renderOrder={2} geometry={nodes.blade.geometry}>
             <saberMaterial uColor={color} />
-          </animated.mesh>
-        </Select>
+          </mesh>
+          <mesh
+            renderOrder={1}
+            geometry={nodes.blade.geometry}
+            scale={[1, 1.2, 1.2]}
+          >
+            <meshBasicMaterial
+              depthWrite={false}
+              transparent={true}
+              toneMapped={true}
+              color={color}
+            />
+          </mesh>
+        </animated.group>
       </group>
     </group>
   );
