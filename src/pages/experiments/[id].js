@@ -20,7 +20,8 @@ const LoadingExperiment = () => {
 
 // dom components goes here
 const DOM = ({ experiment }) => {
-  const { experimentLoaded, debug, hideLeva, showcase } = useStore();
+  const { experimentLoaded, debug, hideLeva, showcase, collapseLeva } =
+    useStore();
 
   useEffect(() => {
     if (window.location.hash.includes('debug')) {
@@ -82,7 +83,15 @@ const DOM = ({ experiment }) => {
           </div>
         </div>
       </div>
-      <Leva hidden={hideLeva} />
+      <Leva
+        hidden={hideLeva}
+        collapsed={{
+          collapsed: collapseLeva,
+          onChange: (collapsed) => {
+            useStore.setState({ collapseLeva: collapsed });
+          },
+        }}
+      />
     </>
   );
 };

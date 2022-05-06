@@ -2,10 +2,18 @@ import oceanicHorizonImage from '../../public/img/experiments/oceanichorizon.png
 import cosmicplatformImage from '../../public/img/experiments/cosmicplatform.png';
 import chaossphereImage from '../../public/img/experiments/chaossphere.png';
 import skywalkerImage from '../../public/img/experiments/skywalker.png';
+import srankjutsuImage from '../../public/img/experiments/srankjutsu.png';
 import placeholderImage from '@/img/icon.png';
 
 export default function getData() {
   return [
+    {
+      name: 'S Rank Jutsu',
+      page: 'SRankJutsu',
+      image: srankjutsuImage.src,
+      hudColor: '#ffffff',
+      themeColor: '#3e3e3e',
+    },
     {
       name: 'Skywalker',
       page: 'Skywalker',
