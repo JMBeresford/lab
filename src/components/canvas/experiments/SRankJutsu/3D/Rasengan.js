@@ -1,6 +1,7 @@
 import { shaderMaterial, Text } from '@react-three/drei';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { useControls } from 'leva';
+import font from '@/fonts/MajorMonoDisplay.ttf';
 import React, { Suspense, useMemo, useRef, useState } from 'react';
 import { Color, DoubleSide, Vector2 } from 'three';
 import Particles from './Particles';
@@ -167,10 +168,11 @@ const Rasengan = () => {
     <>
       <Suspense fallback={null}>
         <AnimText
+          font={font}
           renderOrder={1}
-          position={[0, 1, -5]}
-          rotation={[Math.PI / 6, 0, 0]}
-          text={`Move your\nmouse or finger\naround in circles`}
+          position={[0, 1, -4.5]}
+          rotation={[Math.PI / 10, 0, 0]}
+          text={`move your\nmouse or\nfinger\naround\nin circles`}
           fontSize={0.9}
           textAlign='center'
           // maxWidth={Math.max(viewport.width / 2.5, 3.5)}
