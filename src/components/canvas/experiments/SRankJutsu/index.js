@@ -1,16 +1,14 @@
 import useStore from '@/helpers/store';
-import { Environment, OrbitControls } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
+import { OrbitControls, useDetectGPU } from '@react-three/drei';
 import { useControls } from 'leva';
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { ACESFilmicToneMapping, CineonToneMapping, Mesh } from 'three';
+import React, { useEffect, useRef } from 'react';
 import Floor from './3D/Floor';
 import Rasengan from './3D/Rasengan';
+// import Post from './Post';
 
 const Experiment = () => {
-  const ref = useRef();
-
-  const { camera, gl, viewport, scene } = useThree();
+  const { camera, gl, viewport } = useThree();
 
   const { fogColor } = useControls(
     'Scene',
@@ -20,16 +18,10 @@ const Experiment = () => {
     { collapsed: true }
   );
 
+  const GPU = useDetectGPU();
+
   useEffect(() => {
     useStore.setState({ experimentLoaded: true });
-  }, []);
-
-  useLayoutEffect(() => {
-    useStore.setState({ collapseLeva: true });
-
-    return () => {
-      useStore.setState({ collapseLeva: false });
-    };
   }, []);
 
   useEffect(() => {
@@ -40,10 +32,6 @@ const Experiment = () => {
     }
   }, [camera, viewport]);
 
-  useLayoutEffect(() => {
-    gl.toneMapping = CineonToneMapping;
-  }, [gl]);
-
   useEffect(() => {
     gl.setClearColor(fogColor, 1);
   }, [gl, fogColor]);
@@ -52,20 +40,19 @@ const Experiment = () => {
     <>
       <fog attach='fog' args={[fogColor, 0.1, 10]} />
 
-      <group ref={ref}>
-        <Rasengan />
-        <Floor />
-        <ambientLight intensity={0.25} />
-        {/* <Environment preset='night' /> */}
+      {/* {GPU.tier >= 1 && <Post />} */}
 
-        <OrbitControls
-          enablePan={false}
-          maxDistance={4}
-          minDistance={2}
-          minPolarAngle={Math.PI / 6}
-          maxPolarAngle={Math.PI / 2.1}
-        />
-      </group>
+      <Rasengan />
+      <Floor />
+      <ambientLight intensity={0.25} />
+
+      <OrbitControls
+        enablePan={false}
+        maxDistance={4}
+        minDistance={2}
+        minPolarAngle={Math.PI / 6}
+        maxPolarAngle={Math.PI / 2.1}
+      />
     </>
   );
 };

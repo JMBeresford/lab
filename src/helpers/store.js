@@ -11,7 +11,7 @@ const useStore = create(() => {
     showcase: false,
     // hide/collapse config panel
     hideLeva: false,
-    collapseLeva: false,
+    collapseLeva: true,
 
     // indicate if the experience has been entered, so remove loading page component
     experienceStarted: false,
