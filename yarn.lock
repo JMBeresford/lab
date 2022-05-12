@@ -4496,6 +4496,11 @@
     "glsl-token-string" "^1.0.1"
     "glsl-tokenizer" "^2.0.2"
 
+"glsl-inverse@^1.0.0":
+  "integrity" "sha1-EsCx0GX1WERNHm/q95td34qRiuY="
+  "resolved" "https://registry.npmjs.org/glsl-inverse/-/glsl-inverse-1.0.0.tgz"
+  "version" "1.0.0"
+
 "glsl-noise@^0.0.0":
   "integrity" "sha1-NndF86MzgsDu7Ey1S36Zz8HXZws="
   "resolved" "https://registry.npmjs.org/glsl-noise/-/glsl-noise-0.0.0.tgz"

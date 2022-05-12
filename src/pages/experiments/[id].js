@@ -99,7 +99,7 @@ const HUD = ({ experiment }) => {
 const Experiment = ({ experiment }) => {
   const Scene = dynamic(
     () => import(`@/components/canvas/experiments/${experiment.page}/Scene`),
-    { ssr: false, suspense: true }
+    { ssr: false, suspense: true, loading: LoadingExperiment }
   )
 
   const DOM = dynamic(
