@@ -76,16 +76,16 @@ void main() {
 
   vec3 col = uColor;
 
-  float light1 = clamp(dot(newNormal, normalize(LIGHT1POS)), 0.0, 1.0) * uLightIntensity.x;
-  float light2 = clamp(dot(newNormal, normalize(LIGHT2POS)), 0.0, 1.0) * uLightIntensity.y;
+  float light1 = max(dot(newNormal, normalize(LIGHT1POS)), 0.0) * uLightIntensity.x;
+  float light2 = max(dot(newNormal, normalize(LIGHT2POS)), 0.0) * uLightIntensity.y;
 
-  // col += light1 * uLight1Color;
-  // col += light2 * uLight2Color;
-  // col += fresnel * uFresnelColor;
+  col += light1 * uLight1Color;
+  col += light2 * uLight2Color;
+  col += fresnel * uFresnelColor;
   
-  col = blendLighten(col, uLight1Color, light1);
-  col = blendLighten(col, uLight2Color, light2);
-  col = blendLighten(col, uFresnelColor, fresnel);
+  // col = blendLighten(col, uLight1Color, light1);
+  // col = blendLighten(col, uLight2Color, light2);
+  // col = blendLighten(col, uFresnelColor, fresnel);
 
   vColor = col;
 

@@ -72,8 +72,8 @@ const Sphere = () => {
       max: 1,
       step: 0.01,
     },
-    light1Color: '#f269ff',
-    light2Color: '#83fffb',
+    light1Color: '#d600ff',
+    light2Color: '#00f5ff',
     highlightColor: '#ffffff',
   })
 
