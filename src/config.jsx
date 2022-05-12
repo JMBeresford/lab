@@ -1,21 +1,12 @@
-import Head from 'next/head';
-import { useMemo } from 'react';
+import Head from 'next/head'
 
-const titleDefault = 'React Three Next Starter';
-const url = 'https://lab.john-beresford.com/';
+const titleDefault = 'React Three Next Starter'
+const url = 'https://react-three-next.vercel.app/'
 const description =
-  'John Beresford is a multi-disciplinary designer and developer. These are some of his experimental works.';
-const author = 'John Beresford';
+  'The easiest and fastest way to create a 3D website using React Three Fiber and NextJS'
+const author = 'Author'
 
-const Header = ({ title = titleDefault, experiment }) => {
-  const banner = useMemo(() => {
-    if (experiment) {
-      return `${url}img/experiments/${experiment.page.toLowerCase()}.png`;
-    } else {
-      return `${url}icons/share.jpg`;
-    }
-  }, [experiment]);
-
+const Header = ({ title = titleDefault }) => {
   return (
     <>
       <Head>
@@ -32,7 +23,7 @@ const Header = ({ title = titleDefault, experiment }) => {
         <meta name='description' content={description} />
         <meta
           name='keywords'
-          content='Software Engineer,Product Manager,Project Manager,Data Scientist,Computer Scientist,John Beresford'
+          content='Software Engineer,Product Manager,Project Manager,Data Scientist,Computer Scientist'
         />
         <meta name='robots' content='index,follow' />
         <meta name='distribution' content='web' />
@@ -42,7 +33,7 @@ const Header = ({ title = titleDefault, experiment }) => {
         <meta name='og:title' content={title} />
         <meta name='og:type' content='site' />
         <meta name='og:url' content={url} />
-        <meta name='og:image' content={banner} />
+        <meta name='og:image' content={'/icons/share.png'} />
         <meta name='og:site_name' content={title} />
         <meta name='og:description' content={description} />
 
@@ -84,13 +75,11 @@ const Header = ({ title = titleDefault, experiment }) => {
       Twitter Summary card
         documentation: https://dev.twitter.com/cards/getting-started
         Be sure validate your Twitter card markup on the documentation site. */}
-        <meta name='twitter:card' content='summary_large_image' />
-        <meta name='twitter:title' content={title} />
-        <meta name='twitter:description' content={description} />
-        <meta name='twitter:image' content={banner} />
+        <meta name='twitter:card' content='summary' />
+        <meta name='twitter:site' content='@onirenaud' />
       </Head>
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

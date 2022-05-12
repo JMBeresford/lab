@@ -1,8 +1,8 @@
-import { shaderMaterial } from '@react-three/drei';
-import { extend, useFrame, useThree } from '@react-three/fiber';
-import React, { useEffect, useMemo, useRef } from 'react';
-import { Vector2 } from 'three';
-import { vertexShader, fragmentShader } from './shaders';
+import { shaderMaterial, Points } from '@react-three/drei'
+import { extend, useFrame, useThree } from '@react-three/fiber'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { BufferAttribute, Vector2 } from 'three'
+import { vertexShader, fragmentShader } from './shaders'
 
 const VortexMaterial = shaderMaterial(
   {
@@ -14,79 +14,69 @@ const VortexMaterial = shaderMaterial(
   vertexShader,
   fragmentShader,
   (m) => {
-    m.depthTest = false;
+    m.depthTest = false
   }
-);
+)
 
-extend({ VortexMaterial });
-const tempV2 = new Vector2();
+extend({ VortexMaterial })
+const tempV2 = new Vector2()
 
 const PointVortex = ({ count = 1000 }) => {
-  const ref = useRef();
+  const ref = useRef()
 
-  const viewport = useThree((state) => state.viewport);
+  const viewport = useThree((state) => state.viewport)
 
   const points = useMemo(() => {
-    let p = [];
+    let p = []
 
     for (let i = 0; i < count; i++) {
-      let x = Math.random() - 0.5;
-      let y = Math.random() - 0.5;
-      let z = -5;
+      let x = Math.random() - 0.5
+      let y = Math.random() - 0.5
+      let z = -5
 
-      p.push(x, y, z);
+      p.push(x, y, z)
     }
 
-    return new Float32Array(p);
-  }, [count]);
+    return new Float32Array(p)
+  }, [count])
 
   const speed = useMemo(() => {
-    let s = [];
+    let s = []
 
     for (let i = 0; i < count; i++) {
-      s.push(Math.random());
+      s.push(Math.random())
     }
 
-    return new Float32Array(s);
-  }, [count]);
+    return new Float32Array(s)
+  }, [count])
+
+  useEffect(() => {
+    ref.current.geometry.setAttribute('speed', new BufferAttribute(speed, 1))
+  }, [speed])
 
   useEffect(() => {
     ref.current.material.uniforms.uViewport.value = [
       viewport.width,
       viewport.height,
-    ];
+    ]
 
-    ref.current.material.uniforms.uDpr.value = viewport.dpr;
-  }, [viewport]);
+    ref.current.material.uniforms.uDpr.value = viewport.dpr
+  }, [viewport])
 
   useFrame(({ clock, mouse }) => {
-    tempV2.lerp(mouse, 0.1);
+    tempV2.lerp(mouse, 0.1)
     if (ref.current && ref.current.material) {
-      ref.current.material.uTime = clock.elapsedTime * 0.2 + 100;
+      ref.current.material.uTime = clock.elapsedTime * 0.2 + 100
 
-      ref.current.material.uMouse = tempV2;
+      ref.current.material.uMouse = tempV2
     }
-  });
+  })
 
   return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute
-          attachObject={['attributes', 'position']}
-          count={points.length / 3}
-          array={points}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attachObject={['attributes', 'speed']}
-          count={speed.length}
-          array={speed}
-          itemSize={1}
-        />
-      </bufferGeometry>
+    <Points ref={ref} positions={points}>
       <vortexMaterial />
-    </points>
-  );
-};
+    </Points>
+  )
+}
 
-export default PointVortex;
+export default PointVortex

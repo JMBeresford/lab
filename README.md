@@ -1,6 +1,3 @@
-# My Lab Website
+# lab
 
-This is a live showcase of all of my web-based experiments, usually involving
-webGL.
-
-🚀 [Check It Out Here](https://lab.john-beresford.com/)
+This project was bootstrapped with [`create-r3f-app`](https://github.com/utsuboco/create-r3f-app)

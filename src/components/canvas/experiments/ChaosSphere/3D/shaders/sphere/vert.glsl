@@ -1,4 +1,4 @@
-precision highp float;
+// precision highp float;
 uniform float uTime;
 uniform float uAmp;
 uniform float uDetail;
@@ -22,7 +22,7 @@ varying vec3 vColor;
 #define LIGHT2POS vec3(3.0, -5.0, -2.0)
 
 #pragma glslify: cnoise = require(glsl-noise/classic/4d)
-// #pragma glslify: blendLighten = require(glsl-blend/lighten)
+#pragma glslify: blendLighten = require(glsl-blend/lighten)
 
 float fbm(vec4 p) {
   float f = 0.0;

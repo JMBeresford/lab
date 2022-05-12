@@ -1,13 +1,13 @@
-import { Suspense, useEffect, useRef } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import PointVortex from './PointVortex';
-import ExperimentList from './ExperimentList';
-import { Text } from '@react-three/drei';
-import fontPath from '@/fonts/MajorMonoDisplay.ttf';
-import { Vector2 } from 'three';
+import { Suspense, useEffect, useRef } from 'react'
+import { useFrame, useThree } from '@react-three/fiber'
+import PointVortex from './PointVortex'
+import ExperimentList from './ExperimentList'
+import { Text } from '@react-three/drei'
+import fontPath from '@/fonts/MajorMonoDisplay.ttf'
+import { Vector2 } from 'three'
 
 const HeaderText = () => {
-  const size = useThree((state) => state.size);
+  const size = useThree((state) => state.size)
 
   return (
     <Text
@@ -17,33 +17,37 @@ const HeaderText = () => {
       color='black'
       fontSize={size.width >= 768 ? 0.75 : 0.375}
     />
-  );
-};
+  )
+}
 
-const tempV2 = new Vector2();
+const tempV2 = new Vector2()
 
 const Experiments = () => {
-  const gl = useThree((state) => state.gl);
-  const camera = useThree((state) => state.camera);
+  const { gl, camera, scene } = useThree()
 
-  const group = useRef();
-
-  useEffect(() => {
-    gl.setClearColor('#fafaff');
-  }, [gl]);
+  const group = useRef()
 
   useEffect(() => {
-    camera.position.set(0, 0, 5);
-    camera.rotation.set(0, 0, 0);
-  }, [camera]);
+    gl.setClearColor('#fafaff', 1)
+  }, [gl])
+
+  useEffect(() => {
+    // stops text labels from being fogged out from experiment's fog
+    scene.fog = null
+  }, [scene])
+
+  useEffect(() => {
+    camera.position.set(0, 0, 5)
+    camera.rotation.set(0, 0, 0)
+  }, [camera])
 
   useFrame(({ mouse }) => {
-    tempV2.lerp(mouse, 0.1);
+    tempV2.lerp(mouse, 0.1)
     if (group.current) {
-      group.current.rotation.x = -tempV2.y * 0.1;
-      group.current.rotation.y = tempV2.x * 0.1;
+      group.current.rotation.x = -tempV2.y * 0.1
+      group.current.rotation.y = tempV2.x * 0.1
     }
-  });
+  })
 
   return (
     <>
@@ -55,7 +59,7 @@ const Experiments = () => {
         </group>
       </Suspense>
     </>
-  );
-};
+  )
+}
 
-export default Experiments;
+export default Experiments

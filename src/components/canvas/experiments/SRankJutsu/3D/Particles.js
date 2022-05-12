@@ -1,11 +1,11 @@
-import { shaderMaterial, useTexture } from '@react-three/drei';
-import { extend, useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { vertexShader, fragmentShader } from './shaders/particles';
-import particleMaskImg from '../img/particleMask.png';
-import { AdditiveBlending, Color, Vector2 } from 'three';
-import { useControls } from 'leva';
-import { animated, useSpring } from '@react-spring/three';
+import { shaderMaterial, useTexture, Points } from '@react-three/drei'
+import { extend, useFrame, useThree } from '@react-three/fiber'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { vertexShader, fragmentShader } from './shaders/particles'
+import particleMaskImg from '../img/particleMask.png'
+import { AdditiveBlending, BufferAttribute, Color, Vector2 } from 'three'
+import { useControls } from 'leva'
+import { animated, useSpring } from '@react-spring/three'
 
 const ParticleMaterial = shaderMaterial(
   {
@@ -21,22 +21,22 @@ const ParticleMaterial = shaderMaterial(
   vertexShader,
   fragmentShader,
   (mat) => {
-    mat.transparent = true;
-    mat.depthTest = false;
-    mat.blending = AdditiveBlending;
+    mat.transparent = true
+    mat.depthTest = false
+    mat.blending = AdditiveBlending
   }
-);
+)
 
-extend({ ParticleMaterial });
+extend({ ParticleMaterial })
 
-const AnimatedParticlesMaterial = animated('particleMaterial');
+const AnimatedParticlesMaterial = animated('particleMaterial')
 
 const Particles = ({ count = 2000, stage }) => {
-  const ref = useRef();
+  const ref = useRef()
 
-  const maskTex = useTexture(particleMaskImg.src);
+  const maskTex = useTexture(particleMaskImg.src)
 
-  const { viewport } = useThree();
+  const { viewport } = useThree()
 
   const { power } = useSpring({
     power:
@@ -49,7 +49,7 @@ const Particles = ({ count = 2000, stage }) => {
         : stage === 3
         ? 0.75
         : 1,
-  });
+  })
 
   const { outerColor, innerColor, size, speed } = useControls(
     'Particles',
@@ -62,60 +62,50 @@ const Particles = ({ count = 2000, stage }) => {
     {
       collapsed: true,
     }
-  );
+  )
 
   const positions = useMemo(() => {
-    let pos = [];
+    let pos = []
 
     for (let i = 0; i < count; i++) {
-      let x = Math.random() * 2 - 1;
-      let y = Math.random() * 2 - 1;
-      let z = Math.random() * 2 - 1;
+      let x = Math.random() * 2 - 1
+      let y = Math.random() * 2 - 1
+      let z = Math.random() * 2 - 1
 
-      let mag = 1 / Math.sqrt(x * x + y * y + z * z);
+      let mag = 1 / Math.sqrt(x * x + y * y + z * z)
 
-      x *= mag;
-      y *= mag;
-      z *= mag;
+      x *= mag
+      y *= mag
+      z *= mag
 
-      pos.push(x, y, z);
+      pos.push(x, y, z)
     }
 
-    return new Float32Array(pos);
-  }, [count]);
+    return new Float32Array(pos)
+  }, [count])
 
   const offset = useMemo(() => {
-    let off = [];
+    let off = []
 
     for (let i = 0; i < count; i++) {
-      off.push(Math.random() * 0.5 + 0.5);
+      off.push(Math.random() * 0.5 + 0.5)
     }
 
-    return new Float32Array(off);
-  }, [count]);
+    return new Float32Array(off)
+  }, [count])
+
+  useEffect(() => {
+    ref.current.geometry.setAttribute('aOffset', new BufferAttribute(offset, 1))
+  }, [offset])
 
   useFrame(({ clock, mouse }, delta) => {
-    ref.current.material.uDelta = delta * 1000;
-    ref.current.material.uTime = clock.elapsedTime + 100;
-  });
+    ref.current.material.uDelta = delta * 1000
+    ref.current.material.uTime = clock.elapsedTime + 100
+  })
 
   return (
     <>
-      <points ref={ref}>
-        <bufferGeometry>
-          <bufferAttribute
-            attachObject={['attributes', 'position']}
-            array={positions}
-            itemSize={3}
-            count={count}
-          />
-          <bufferAttribute
-            attachObject={['attributes', 'aOffset']}
-            array={offset}
-            itemSize={1}
-            count={count}
-          />
-        </bufferGeometry>
+      <Points ref={ref} positions={positions}>
         <AnimatedParticlesMaterial
           uMask={maskTex}
           uDpr={viewport.dpr}
@@ -125,9 +115,9 @@ const Particles = ({ count = 2000, stage }) => {
           uSpeed={speed}
           uPower={power}
         />
-      </points>
+      </Points>
     </>
-  );
-};
+  )
+}
 
-export default Particles;
+export default Particles

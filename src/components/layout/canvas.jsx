@@ -1,5 +1,5 @@
-import { Canvas } from '@react-three/fiber';
-import { Preload } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber'
+import { Preload } from '@react-three/drei'
 
 const LCanvas = ({ children }) => {
   return (
@@ -9,10 +9,10 @@ const LCanvas = ({ children }) => {
       dpr={[1, 2]}
       camera={{ position: [0, 0, 5], rotation: [0, 0, 0] }}
     >
-      {/* <Preload all /> */}
+      <Preload all />
       {children}
     </Canvas>
-  );
-};
+  )
+}
 
-export default LCanvas;
+export default LCanvas

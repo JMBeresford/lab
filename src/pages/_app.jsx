@@ -1,49 +1,32 @@
-import { useRouter } from 'next/router';
-import useStore from '@/helpers/store';
-import { useEffect } from 'react';
-import Header from '@/config';
-import Dom from '@/components/layout/dom';
-import partition from '@/helpers/partition';
-import '@/styles/globals.scss';
-import dynamic from 'next/dynamic';
-import Script from 'next/script';
-import * as ga from '../../lib/ga';
-
-const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
-  ssr: false,
-});
-
-const Balance = ({ child }) => {
-  const [r3f, dom] = partition(child, (c) => c.props.r3f === true);
-
-  return (
-    <>
-      <Dom>{dom}</Dom>
-      <LCanvas>{r3f}</LCanvas>
-    </>
-  );
-};
+import { useRouter } from 'next/router'
+import useStore from '@/helpers/store'
+import { useEffect } from 'react'
+import Header from '@/config'
+import Balance from '@/helpers/Balance'
+import '@/styles/globals.scss'
+import Script from 'next/script'
+import * as ga from '../../lib/ga'
 
 function App({ Component, pageProps = { title: 'index' } }) {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
-    useStore.setState({ router });
-  }, [router]);
+    useStore.setState({ router })
+  }, [router])
 
   useEffect(() => {
     const handleRouteChange = (url) => {
-      ga.pageview(url);
-    };
+      ga.pageview(url)
+    }
 
-    router.events.on('routeChangeComplete', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChange)
 
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
-  const child = Component(pageProps).props.children;
+  const child = Component(pageProps).props.children
 
   return (
     <>
@@ -64,12 +47,12 @@ function App({ Component, pageProps = { title: 'index' } }) {
           `}
       </Script>
       {child && child.length > 1 ? (
-        <Balance child={Component(pageProps).props.children} />
+        <Balance child={child} />
       ) : (
         <Component {...pageProps} />
       )}
     </>
-  );
+  )
 }
 
-export default App;
+export default App

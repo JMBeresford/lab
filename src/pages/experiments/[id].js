@@ -1,43 +1,43 @@
-import dynamic from 'next/dynamic';
-import getData from '@/helpers/data';
-import Link from 'next/link';
-import { Suspense, useEffect } from 'react';
-import useStore from '@/helpers/store';
-import { Stats } from '@react-three/drei';
-import { Leva } from 'leva';
+import dynamic from 'next/dynamic'
+import getData from '@/helpers/data'
+import Link from 'next/link'
+import { Suspense, useEffect } from 'react'
+import useStore from '@/helpers/store'
+import { Stats } from '@react-three/drei'
+import { Leva } from 'leva'
+import Balance from '@/helpers/Balance'
 
 const LoadingExperiment = () => {
   useEffect(() => {
-    useStore.setState({ experimentLoaded: false });
+    useStore.setState({ experimentLoaded: false })
 
     return () => {
-      useStore.setState({ experimentLoaded: true });
-    };
-  }, []);
+      useStore.setState({ experimentLoaded: true })
+    }
+  }, [])
 
-  return <></>;
-};
+  return <></>
+}
 
-// dom components goes here
-const DOM = ({ experiment }) => {
+const HUD = ({ experiment }) => {
   const { experimentLoaded, debug, hideLeva, showcase, collapseLeva } =
-    useStore();
+    useStore()
 
   useEffect(() => {
     if (window.location.hash.includes('debug')) {
-      useStore.setState({ debug: true });
+      useStore.setState({ debug: true })
     } else {
-      useStore.setState({ debug: false });
+      useStore.setState({ debug: false })
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (window.location.hash.includes('showcase')) {
-      useStore.setState({ showcase: true });
+      useStore.setState({ showcase: true })
     } else {
-      useStore.setState({ showcase: false });
+      useStore.setState({ showcase: false })
     }
-  }, []);
+  }, [])
 
   return (
     <>
@@ -88,65 +88,61 @@ const DOM = ({ experiment }) => {
         collapsed={{
           collapsed: collapseLeva,
           onChange: (collapsed) => {
-            useStore.setState({ collapseLeva: collapsed });
+            useStore.setState({ collapseLeva: collapsed })
           },
         }}
       />
     </>
-  );
-};
-
-// canvas components goes here
-const R3F = ({ experiment }) => {
-  const Experiment = dynamic(
-    () => import(`@/components/canvas/experiments/${experiment.page}`),
-    { ssr: false }
-  );
-
-  return (
-    <>
-      <Suspense fallback={<LoadingExperiment />}>
-        <Experiment />
-      </Suspense>
-    </>
-  );
-};
+  )
+}
 
 const Experiment = ({ experiment }) => {
+  const Scene = dynamic(
+    () => import(`@/components/canvas/experiments/${experiment.page}/Scene`),
+    { ssr: false, suspense: true, loading: LoadingExperiment }
+  )
+
+  const DOM = dynamic(
+    () => import(`@/components/canvas/experiments/${experiment.page}`),
+    { ssr: false }
+  )
+
   return (
     <>
-      <DOM experiment={experiment} />
-      <R3F r3f experiment={experiment} />
-    </>
-  );
-};
+      <HUD experiment={experiment} />
+      <DOM />
 
-export default Experiment;
+      <Scene r3f />
+    </>
+  )
+}
+
+export default Experiment
 
 export async function getStaticProps({ params }) {
-  const experiment = getData().find((e) => e.page === params.id);
+  const experiment = getData().find((e) => e.page === params.id)
 
   return {
     props: {
       title: experiment.name,
       experiment,
     },
-  };
+  }
 }
 
 export async function getStaticPaths() {
-  const data = getData();
+  const data = getData()
 
   const paths = data.map((experiment) => {
     return {
       params: {
         id: experiment.page,
       },
-    };
-  });
+    }
+  })
 
   return {
     paths,
     fallback: false,
-  };
+  }
 }
