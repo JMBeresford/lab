@@ -27,8 +27,9 @@ extend({ GlowMaterial });
 const Glow = ({ height = 12 }) => {
   const ref = useRef();
 
-  const { color } = useControls("Saber", {
+  const { color, glowMax } = useControls("Saber", {
     color: { value: "#43ff64" },
+    // glowMax: { value: 1.0, min: 0.0, max: 1.0, step: 0.01 },
   });
 
   useFrame(({ clock }) => {
@@ -42,7 +43,7 @@ const Glow = ({ height = 12 }) => {
       position={[height / 2 + 0.5, 0, 0]}
     >
       <capsuleGeometry args={[0.65, height, 20, 20]} />
-      <glowMaterial uColor={color} uGlowFalloff={1.75} />
+      <glowMaterial uColor={color} uGlowFalloff={1.75} uGlowMax={0.3} />
     </mesh>
   );
 };
