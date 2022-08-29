@@ -1,13 +1,13 @@
-import { shaderMaterial, Text } from '@react-three/drei';
-import { extend, useFrame, useThree } from '@react-three/fiber';
-import { useControls } from 'leva';
-import font from '@/fonts/MajorMonoDisplay.ttf';
-import React, { Suspense, useMemo, useRef, useState } from 'react';
-import { Color, DoubleSide, Vector2 } from 'three';
-import Particles from './Particles';
-import { vertexShader, fragmentShader } from './shaders/rasengan';
-import { animated, useSpring } from '@react-spring/three';
-import Wind from './Wind';
+import { shaderMaterial, Text } from "@react-three/drei";
+import { extend, useFrame, useThree } from "@react-three/fiber";
+import { useControls } from "leva";
+import font from "@/fonts/MajorMonoDisplay.ttf";
+import React, { Suspense, useMemo, useRef, useState } from "react";
+import { Color, DoubleSide, Vector2 } from "three";
+import Particles from "./Particles";
+import { vertexShader, fragmentShader } from "./shaders/rasengan";
+import { animated, useSpring } from "@react-spring/three";
+import Wind from "./Wind";
 
 const RasenganMaterial = shaderMaterial(
   {
@@ -57,7 +57,7 @@ const Rasengan = () => {
   const [on, setOn] = useState(false);
   const [stage, setStage] = useState(0);
 
-  const { scale, textOpacity, lightIntensity } = useSpring({
+  const { scale, lightIntensity } = useSpring({
     scale:
       stage === 0
         ? [0, 0, 0]
@@ -68,7 +68,6 @@ const Rasengan = () => {
         : stage === 3
         ? [0.75, 0.75, 0.75]
         : [1, 1, 1],
-    textOpacity: on ? 0 : 1,
     lightIntensity:
       stage === 0
         ? 0
@@ -88,10 +87,10 @@ const Rasengan = () => {
     powerHighlight,
     offsetHighlight,
   } = useControls(
-    'Rasengan',
+    "Rasengan",
     {
-      color: { value: '#95e7f5' },
-      colorHighlight: { value: '#95e7f5' },
+      color: { value: "#95e7f5" },
+      colorHighlight: { value: "#95e7f5" },
       sizeHighlight: { value: 1.02, min: 0, max: 2, step: 0.025 },
       powerHighlight: { value: 1.5, min: 0, max: 75, step: 0.05 },
       offsetHighlight: { value: 1.2, min: 0, max: 5, step: 0.01 },
@@ -100,7 +99,7 @@ const Rasengan = () => {
   );
 
   const { density, coreExponent, coreOffset } = useControls(
-    'Core',
+    "Core",
     {
       density: { value: 5.5, min: 0, max: 10, step: 0.01 },
       coreExponent: { value: 1.7, min: 0, max: 5, step: 0.1 },
@@ -111,10 +110,10 @@ const Rasengan = () => {
 
   const { outerColor, innerColor, noiseScale, noiseSize, noiseSpeed } =
     useControls(
-      'Noise',
+      "Noise",
       {
-        outerColor: { value: '#00cfff' },
-        innerColor: { value: '#8eddff' },
+        outerColor: { value: "#00cfff" },
+        innerColor: { value: "#8eddff" },
         noiseScale: { value: 0.5, min: 0, max: 5, step: 0.1 },
         noiseSize: { value: 0.16, min: 0, max: 1, step: 0.01 },
         noiseSpeed: { value: 1, min: 0, max: 5, step: 0.1 },
@@ -174,10 +173,8 @@ const Rasengan = () => {
           rotation={[Math.PI / 10, 0, 0]}
           text={`move your\nmouse or\nfinger\naround\nin circles`}
           fontSize={0.9}
-          textAlign='center'
+          textAlign="center"
           // maxWidth={Math.max(viewport.width / 2.5, 3.5)}
-          fillOpacity={textOpacity}
-          strokeOpacity={textOpacity}
         />
       </Suspense>
       <animated.group renderOrder={2} scale={scale}>

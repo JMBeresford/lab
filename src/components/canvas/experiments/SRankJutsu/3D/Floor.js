@@ -1,32 +1,22 @@
-import { MeshReflectorMaterial, useTexture } from '@react-three/drei';
-import albedoImg from '../img/floor/albedo.jpeg';
-import normalImg from '../img/floor/normal.jpeg';
-import roughnessImg from '../img/floor/roughness.jpeg';
-import metalnessImg from '../img/floor/metallic.jpeg';
-import heightImg from '../img/floor/height.jpeg';
-import aoImg from '../img/floor/ao.jpeg';
-import { useEffect, useLayoutEffect } from 'react';
-import { RepeatWrapping } from 'three';
+import { MeshReflectorMaterial, useTexture } from "@react-three/drei";
+import albedoImg from "../img/floor/albedo.jpeg";
+import normalImg from "../img/floor/normal.jpeg";
+// import roughnessImg from "../img/floor/roughness.jpeg";
+import aoImg from "../img/floor/ao.jpeg";
+import { RepeatWrapping } from "three";
 
 const Floor = () => {
-  const textures = useTexture({
-    map: albedoImg.src,
-    normalMap: normalImg.src,
-    roughnessMap: roughnessImg.src,
-    // metalnessMap: metalnessImg.src,
-    // displacementMap: heightImg.src,
-    aoMap: aoImg.src,
-  });
-
-  useLayoutEffect(() => {
-    for (let tex of Object.values(textures)) {
-      tex.wrapS = RepeatWrapping;
-      tex.wrapT = RepeatWrapping;
-      tex.repeat.set(6, 6);
-
-      tex.needsUpdate = true;
+  const [albedo, normal, ao] = useTexture(
+    [albedoImg.src, normalImg.src, aoImg.src],
+    (textures) => {
+      textures.forEach((tex) => {
+        tex.wrapS = RepeatWrapping;
+        tex.wrapT = RepeatWrapping;
+        tex.repeat.set(6, 6);
+        tex.needsUpdate = true;
+      });
     }
-  }, [textures]);
+  );
 
   return (
     <mesh
@@ -37,9 +27,9 @@ const Floor = () => {
       <planeGeometry args={[50, 50]} />
       <meshToonMaterial
         transparent={true}
-        {...textures}
-        metalness={0}
-        // displacementScale={0.5}
+        map={albedo}
+        normalMap={normal}
+        aoMap={ao}
       />
     </mesh>
   );
