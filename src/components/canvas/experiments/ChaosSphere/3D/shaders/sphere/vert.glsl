@@ -18,18 +18,23 @@ varying vec3 vColor;
 #define FBM_GAIN 0.675
 #define FBM_LACUNARITY 4.0
 
-#define LIGHT1POS vec3(-3.0, 5.0, 2.0)
-#define LIGHT2POS vec3(3.0, -5.0, -2.0)
+#define LIGHT1POS1 (vec3(-4.3, 5.0, 4.2) * 1.65)
+#define LIGHT1POS2 (vec3(-2.85, 3.2, -2.9) * 1.35)
+#define LIGHT1POS3 vec3(-3.0, 5.0, 0.0)
+
+#define LIGHT2POS1 (vec3(3.2, -4.2, -4.12) * 1.35)
+#define LIGHT2POS2 (vec3(1.9, -6.0, 2.8) * 1.65)
+#define LIGHT2POS3 vec3(3.0, -5.0, 0.0)
 
 #pragma glslify: cnoise = require(glsl-noise/classic/4d)
 #pragma glslify: blendLighten = require(glsl-blend/lighten)
 
 float fbm(vec4 p) {
   float f = 0.0;
-  
+
   float a = FBM_INIT_AMP;
   float fq = FBM_INIT_FREQ;
-  for (int i = 0; i < uFbmOctaves; i++) {
+  for(int i = 0; i < uFbmOctaves; i++) {
     f += a * cnoise(p * fq);
     a *= FBM_GAIN;
     fq *= FBM_LACUNARITY;
@@ -42,7 +47,6 @@ float domainDistort(vec4 p) {
 
   return fbm(p + f);
 }
-
 
 void main() {
   vec3 pos = position;
@@ -70,19 +74,26 @@ void main() {
 
   vec3 newNormal = normalize(cross(newp1 - pos, newp2 - pos));
 
+  // calculate fresnel
   vec3 viewDir = normalize(pos - cameraPosition);
-  float fresnel = (1.0 + dot(viewDir, newNormal)) * 1.2;
-  fresnel = pow(max(0.0, fresnel), 10.0);
+  float fresnel = (1.05 + dot(viewDir, newNormal)) * 1.3;
+  fresnel = pow(abs(fresnel), 7.0);
 
+  // compose lighting
   vec3 col = uColor;
 
-  float light1 = max(dot(newNormal, normalize(LIGHT1POS)), 0.0) * uLightIntensity.x;
-  float light2 = max(dot(newNormal, normalize(LIGHT2POS)), 0.0) * uLightIntensity.y;
+  float light1 = max(dot(newNormal, normalize(LIGHT1POS1)), 0.0) * uLightIntensity.x;
+  light1 += max(dot(newNormal, normalize(LIGHT1POS2)), 0.0) * uLightIntensity.x;
+  light1 += max(dot(newNormal, normalize(LIGHT1POS3)), 0.0) * uLightIntensity.x;
+
+  float light2 = max(dot(newNormal, normalize(LIGHT2POS1)), 0.0) * uLightIntensity.y;
+  light2 += max(dot(newNormal, normalize(LIGHT2POS2)), 0.0) * uLightIntensity.y;
+  light2 += max(dot(newNormal, normalize(LIGHT2POS3)), 0.0) * uLightIntensity.y;
 
   col += light1 * uLight1Color;
   col += light2 * uLight2Color;
   col += fresnel * uFresnelColor;
-  
+
   // col = blendLighten(col, uLight1Color, light1);
   // col = blendLighten(col, uLight2Color, light2);
   // col = blendLighten(col, uFresnelColor, fresnel);
