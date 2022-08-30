@@ -1,10 +1,14 @@
-import React, { useRef } from 'react';
-import { Environment, shaderMaterial } from '@react-three/drei';
-import { extend, useThree, useFrame } from '@react-three/fiber';
-import skyVertexShader from '../shaders/sky/vertex.glsl';
-import skyFragmentShader from '../shaders/sky/fragment.glsl';
-import { Vector2, Color, BackSide } from 'three';
-import envMap from '../img/env.hdr';
+import React, { useRef } from "react";
+import {
+  Environment,
+  GradientTexture,
+  shaderMaterial,
+} from "@react-three/drei";
+import { extend, useThree, useFrame } from "@react-three/fiber";
+import skyVertexShader from "../shaders/sky/vertex.glsl";
+import skyFragmentShader from "../shaders/sky/fragment.glsl";
+import { Vector2, Color, BackSide } from "three";
+import envMap from "../img/env.hdr";
 
 // const SkyMaterial = shaderMaterial(
 //   {
@@ -31,18 +35,11 @@ const Sky = (props) => {
 
   return (
     <>
-      <Environment files={envMap} />
-      <mesh ref={ref} {...props}>
-        {/* <planeGeometry args={[200, 200]} />
-      <skyMaterial
-        uColor={'#00090f'}
-        uColor2={'#001524'}
-        uColor3={'#ff9e9e'}
-        uColor4={'#000e24'}
-        uResolution={[size.width, size.height]}
-      /> */}
+      <mesh ref={ref} {...props} rotation={[Math.PI / 2, -Math.PI / 3, 0]}>
         <sphereGeometry args={[200, 20, 20]} />
-        <meshStandardMaterial side={BackSide} envMapIntensity={0.5} />
+        <meshBasicMaterial side={BackSide}>
+          <GradientTexture stops={[0, 1]} colors={["#3d1538", "#15153d"]} />
+        </meshBasicMaterial>
       </mesh>
     </>
   );
