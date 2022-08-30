@@ -1,44 +1,41 @@
-import useStore from '@/helpers/store'
-import { useThree } from '@react-three/fiber'
-import { OrbitControls, useDetectGPU } from '@react-three/drei'
-import { useControls } from 'leva'
-import React, { useEffect, useRef } from 'react'
-import Floor from './3D/Floor'
-import Rasengan from './3D/Rasengan'
-import { Color } from 'three'
+import useStore from "@/helpers/store";
+import { useThree } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { useControls } from "leva";
+import React, { useEffect } from "react";
+import Floor from "./3D/Floor";
+import Rasengan from "./3D/Rasengan";
 
 const Scene = () => {
-  const { camera, gl, viewport } = useThree()
+  const { camera, gl, viewport } = useThree();
 
   const { fogColor } = useControls(
-    'Scene',
+    "Scene",
     {
-      fogColor: { value: '#131317' },
+      fogColor: { value: "#131317" },
     },
     { collapsed: true }
-  )
-
-  const GPU = useDetectGPU()
+  );
 
   useEffect(() => {
-    useStore.setState({ experimentLoaded: true })
-  }, [])
+    useStore.setState({ experimentLoaded: true });
+  }, []);
 
   useEffect(() => {
     if (viewport.width > 5) {
-      camera.position.set(0, 0, 2.5)
+      camera.position.set(0, 0, 2.5);
     } else {
-      camera.position.set(0, 0, 3.5)
+      camera.position.set(0, 0, 3.5);
     }
-  }, [camera, viewport])
+  }, [camera, viewport]);
 
   useEffect(() => {
-    gl.setClearColor(fogColor, 1)
-  }, [gl, fogColor])
+    gl.setClearColor(fogColor, 1);
+  }, [gl, fogColor]);
 
   return (
     <>
-      <fog attach='fog' args={[fogColor, 0.1, 10]} />
+      <fog attach="fog" args={[fogColor, 0.1, 10]} />
 
       <Rasengan />
       <Floor />
@@ -54,7 +51,7 @@ const Scene = () => {
         maxPolarAngle={Math.PI / 2.1}
       />
     </>
-  )
-}
+  );
+};
 
-export default Scene
+export default Scene;
