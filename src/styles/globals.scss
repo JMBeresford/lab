@@ -1,6 +1,6 @@
-@use './loading';
-@use './experiments';
-@use './landing';
+@use "./loading";
+@use "./experiments";
+@use "./landing";
 
 * {
   box-sizing: border-box;
@@ -21,4 +21,18 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden;
+}
+
+.levaWrapper {
+  position: absolute;
+  z-index: 50;
+
+  bottom: 2rem;
+  left: 2rem;
+
+  max-width: 65vw;
+
+  svg {
+    display: grid !important;
+  }
 }

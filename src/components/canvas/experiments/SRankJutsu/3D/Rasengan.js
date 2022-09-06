@@ -3,7 +3,7 @@ import { extend, useFrame, useThree } from "@react-three/fiber";
 import { useControls } from "leva";
 import font from "@/fonts/MajorMonoDisplay.ttf";
 import React, { Suspense, useMemo, useRef, useState } from "react";
-import { Color, DoubleSide, Vector2 } from "three";
+import { Color, DoubleSide, MeshStandardMaterial, Vector2 } from "three";
 import Particles from "./Particles";
 import { vertexShader, fragmentShader } from "./shaders/rasengan";
 import { animated, useSpring } from "@react-spring/three";
@@ -44,10 +44,9 @@ const RasenganMaterial = shaderMaterial(
 
 extend({ RasenganMaterial });
 
-const AnimText = animated(Text);
-
 const Rasengan = () => {
   const ref = useRef();
+  const textRef = useRef();
   const lightRef = useRef();
   const power = useRef(-100);
   const lastMouse = useRef(new Vector2(0, 0));
@@ -166,16 +165,18 @@ const Rasengan = () => {
   return (
     <>
       <Suspense fallback={null}>
-        <AnimText
+        <Text
+          ref={textRef}
           font={font}
-          renderOrder={1}
           position={[0, 1, -4.5]}
           rotation={[Math.PI / 10, 0, 0]}
           text={`move your\nmouse or\nfinger\naround\nin circles`}
           fontSize={0.9}
           textAlign="center"
           // maxWidth={Math.max(viewport.width / 2.5, 3.5)}
-        />
+        >
+          <meshStandardMaterial color={"#999"} />
+        </Text>
       </Suspense>
       <animated.group renderOrder={2} scale={scale}>
         <mesh ref={ref}>

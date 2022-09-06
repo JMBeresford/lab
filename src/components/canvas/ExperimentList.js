@@ -1,10 +1,10 @@
-import { Flex, Box } from '@react-three/flex';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import ExperimentImage from './ExperimentImage';
+import { Flex, Box } from "@react-three/flex";
+import { useEffect, useMemo, useRef, useState } from "react";
+import ExperimentImage from "./ExperimentImage";
 
-import { useFrame, useThree } from '@react-three/fiber';
-import { damp, lerp } from 'three/src/math/MathUtils';
-import getData from '@/helpers/data';
+import { useFrame, useThree } from "@react-three/fiber";
+import { damp } from "three/src/math/MathUtils";
+import getData from "@/helpers/data";
 
 const IMAGE_SIZE = 4;
 const MAX_COLUNMS = 4;
@@ -33,22 +33,25 @@ const ExperimentList = () => {
 
   useEffect(() => {
     const handleScroll = (e) => {
+      e.stopPropagation();
       scroll.current += e.deltaY * 0.01;
     };
 
-    window.addEventListener('wheel', handleScroll);
+    window.addEventListener("wheel", handleScroll);
 
     return () => {
-      window.removeEventListener('wheel', handleScroll);
+      window.removeEventListener("wheel", handleScroll);
     };
   }, []);
 
   useEffect(() => {
     const handleTouchStart = (e) => {
+      e.stopPropagation();
       touchY.current = e.touches[0].clientY;
     };
 
     const handleTouchMove = (e) => {
+      e.stopPropagation();
       let y = e.touches[0].clientY;
 
       let dy = y - touchY.current;
@@ -58,12 +61,12 @@ const ExperimentList = () => {
       touchY.current = y;
     };
 
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove);
 
     return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
 
@@ -97,11 +100,11 @@ const ExperimentList = () => {
   return (
     <Flex
       ref={ref}
-      justifyContent='center'
-      alignItems='center'
+      justifyContent="center"
+      alignItems="center"
       position={[0, -0.25, 0]}
-      flexDirection='row'
-      flexWrap='wrap'
+      flexDirection="row"
+      flexWrap="wrap"
       size={[size.width, size.height, 0]}
       centerAnchor
     >

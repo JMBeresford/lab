@@ -1,44 +1,39 @@
-import { useEffect, useState } from "react";
-import { useThree } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
 import useStore from "@/helpers/store";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, useCursor } from "@react-three/drei";
 import Sphere from "./3D/Sphere";
 import Sky from "./3D/Sky";
+import { useThree } from "@react-three/fiber";
 
 const ChaosSphere = () => {
-  const { camera, gl } = useThree();
-
-  const [dragging, setDragging] = useState(false);
-
-  useEffect(() => {
-    camera.position.set(1.65, -2.3, 7.1);
-    camera.rotation.reorder("YXZ");
-  }, [camera.position, camera.rotation]);
+  const camRef = useRef();
+  const { viewport } = useThree();
 
   useEffect(() => {
     useStore.setState({ experimentLoaded: true });
   }, []);
 
   useEffect(() => {
-    document.body.style.cursor = dragging ? "grabbing" : "grab";
-
-    return () => {
-      document.body.style.cursor = "";
-    };
-  }, [dragging]);
+    if (viewport.width < 5) {
+      camRef.current.position.z = 15;
+    }
+  }, [viewport]);
 
   return (
     <>
-      <group
-        onPointerDown={() => setDragging(true)}
-        onPointerUp={() => setDragging(false)}
-      >
+      <group>
         <Sphere />
         <Sky />
       </group>
+
+      <PerspectiveCamera
+        ref={camRef}
+        makeDefault={true}
+        position={[1.65, -2.3, 10.1]}
+      />
       <OrbitControls
         enablePan={false}
-        maxDistance={13}
+        maxDistance={20}
         minDistance={6}
         enableDamping={true}
         dampingFactor={0.025}

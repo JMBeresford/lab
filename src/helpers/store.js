@@ -1,4 +1,4 @@
-import create from 'zustand';
+import create from "zustand";
 
 const useStore = create(() => {
   return {
@@ -18,6 +18,12 @@ const useStore = create(() => {
 
     // indicate if the selected experience has been loaded, so can dismiss the loading indicator
     experimentLoaded: false,
+
+    // state related to routing to/from experiments
+    currentExperiment: null,
+
+    // experiment uses orbit controls to orbit an object
+    grabControls: false,
   };
 });
 

@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
-import Loading from '@/components/dom/Loading';
-import dynamic from 'next/dynamic';
-import { useProgress, Stats } from '@react-three/drei';
-import useStore from '@/helpers/store';
-import PortfolioLink from '@/components/dom/PortfolioLink';
+import { useState, useEffect } from "react";
+import Loading from "@/components/dom/Loading";
+import dynamic from "next/dynamic";
+import { useProgress, Stats } from "@react-three/drei";
+import useStore from "@/helpers/store";
+import PortfolioLink from "@/components/dom/PortfolioLink";
+import ExperimentLoading from "@/components/dom/ExperimentLoading";
 
-const Experiments = dynamic(() => import('@/components/canvas/Experiments'), {
+const Experiments = dynamic(() => import("@/components/canvas/Experiments"), {
   ssr: false,
 });
 
@@ -16,7 +17,7 @@ const DOM = () => {
   const { progress } = useProgress();
 
   useEffect(() => {
-    if (window.location.hash === '#debug') {
+    if (window.location.hash === "#debug") {
       useStore.setState({ debug: true });
     }
   }, []);
@@ -26,6 +27,7 @@ const DOM = () => {
       {!experienceStarted && <Loading progress={progress} />}
 
       {debug && <Stats />}
+      <ExperimentLoading />
       <PortfolioLink />
     </>
   );
@@ -54,7 +56,7 @@ export default Page;
 export async function getStaticProps() {
   return {
     props: {
-      title: 'Lab - John Beresford',
+      title: "Lab - John Beresford",
     },
   };
 }

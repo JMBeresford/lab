@@ -10,7 +10,7 @@ const Sky = (props) => {
       <mesh ref={ref} {...props} rotation={[Math.PI / 2, -Math.PI / 3, 0]}>
         <sphereGeometry args={[200, 20, 20]} />
         <meshBasicMaterial side={BackSide}>
-          <GradientTexture stops={[0, 1]} colors={["#3d1538", "#15153d"]} />
+          <GradientTexture stops={[0.5, 1]} colors={["#150745", "#111"]} />
         </meshBasicMaterial>
       </mesh>
     </>

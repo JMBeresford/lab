@@ -1,4 +1,4 @@
-// precision highp float;
+precision highp float;
 uniform float uTime;
 uniform float uAmp;
 uniform float uDetail;
@@ -43,7 +43,7 @@ float fbm(vec4 p) {
 }
 
 float domainDistort(vec4 p) {
-  float f = fbm(p);
+  float f = cnoise(-p.xwzy * 3.0);
 
   return fbm(p + f);
 }

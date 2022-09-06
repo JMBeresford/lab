@@ -34,13 +34,13 @@ const Sphere = () => {
 
   const { amplitude, detail, speed, dimensionality } = useControls("Sphere", {
     amplitude: {
-      value: 0.25,
+      value: 0.2,
       min: 0,
       max: 1,
       step: 0.05,
     },
     detail: {
-      value: 0.5,
+      value: 0.35,
       min: 0,
       max: 1,
       step: 0.05,
@@ -86,16 +86,16 @@ const Sphere = () => {
   const resolution = useMemo(() => {
     switch (GPU.tier) {
       case 3: {
-        return 600;
+        return GPU.isMobile ? 300 : 450;
       }
       case 2: {
-        return 512;
+        return GPU.isMobile ? 200 : 300;
       }
       case 1: {
-        return 256;
+        return GPU.isMobile ? 150 : 256;
       }
       default: {
-        return 128;
+        return GPU.isMobile ? 100 : 128;
       }
     }
   }, [GPU]);
