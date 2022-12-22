@@ -60,6 +60,7 @@ const ExperimentImage = ({ experiment, id }) => {
         onPointerOut={() => setHovered(false)}
         onClick={() => handleClick()}
         opacity={opacity}
+        toneMapped={false}
         {...imageProps}
       />
       <Text
@@ -76,7 +77,9 @@ const ExperimentImage = ({ experiment, id }) => {
         outlineBlur={"20%"}
         outlineOpacity={textOpacity}
         position={[0, 0, 0.1]}
-      />
+      >
+        <meshBasicMaterial toneMapped={false} />
+      </Text>
     </group>
   );
 };
