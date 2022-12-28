@@ -1,29 +1,18 @@
 import { Text } from "@react-three/drei";
 import { Vector3 } from "@react-three/fiber";
 import React from "react";
-import { LabelParamsTypes } from ".";
+import { TroikaTextProps } from ".";
 
-type PropsTypes = LabelParamsTypes & {
+export type LabelProps = {
+  label?: string;
   position?: Vector3;
-};
+} & TroikaTextProps;
 
-const Label = (props: PropsTypes) => {
-  const {
-    font,
-    fontSize = 0.08,
-    color = "black",
-    label,
-    position = [0, 0, 0],
-  } = props;
+const Label = (props: LabelProps) => {
+  const { label, position, ...restProps } = props;
   return (
     <group position={position}>
-      <Text
-        font={font}
-        fontSize={fontSize}
-        anchorX="left"
-        anchorY="bottom"
-        color={color}
-      >
+      <Text anchorX="left" anchorY="bottom" {...restProps}>
         {label}
       </Text>
     </group>

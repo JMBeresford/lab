@@ -3,7 +3,7 @@ import { Preload } from "@react-three/drei";
 
 const LCanvas = ({ children }) => {
   return (
-    <Canvas mode="concurrent" dpr={[1, 2]} camera={null}>
+    <Canvas mode="concurrent" dpr={[1, 2]} camera={null} shadows>
       <Preload all />
       {children}
     </Canvas>

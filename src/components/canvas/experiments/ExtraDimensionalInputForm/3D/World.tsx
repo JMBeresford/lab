@@ -1,36 +1,53 @@
-import { ContactShadows, Environment, Sphere, Text3D } from "@react-three/drei";
+import {
+  AccumulativeShadows,
+  Center,
+  Environment,
+  RandomizedLight,
+  Text3D,
+} from "@react-three/drei";
 import { useControls } from "leva";
-import React from "react";
-import { BackSide } from "three";
+import React, { Suspense } from "react";
 
 const World = () => {
   const { textColor } = useControls("scene", {
-    textColor: "#bbbbff",
+    textColor: "#dbdbff",
   });
 
   return (
-    <group>
-      <ContactShadows opacity={0.75} far={50} frames={1} />
-      <Environment preset="city" />
-
-      <Text3D
-        font="/fonts/montserrat_black_regular.json"
-        position={[-3, 0.02, -2]}
-        rotation-y={Math.PI / 6}
-      >
-        LOGIN
-        <meshStandardMaterial color={textColor} envMapIntensity={1.5} />
-      </Text3D>
-
-      <mesh>
-        <sphereGeometry args={[50, 10]} />
-        <meshBasicMaterial
+    <Suspense fallback={null}>
+      <group>
+        <AccumulativeShadows
+          temporal
+          frames={120}
+          colorBlend={1}
+          scale={30}
           color={"#ffffff"}
-          side={BackSide}
-          toneMapped={true}
-        />
-      </mesh>
-    </group>
+          toneMapped={false}
+          position={[2.5, 0.02, -3.5]}
+        >
+          <RandomizedLight amount={12} frames={120} intensity={5} radius={20} />
+        </AccumulativeShadows>
+        <Environment preset="city" />
+
+        <group rotation-y={-Math.PI / 6} position={[2.5, 0.0, -3.5]}>
+          <Center top>
+            <Text3D
+              font="/fonts/montserrat_black_regular.json"
+              rotation-x={-Math.PI / 48}
+              castShadow={true}
+              curveSegments={20}
+            >
+              LOGIN
+              <meshStandardMaterial
+                color={textColor}
+                envMapIntensity={2}
+                toneMapped={false}
+              />
+            </Text3D>
+          </Center>
+        </group>
+      </group>
+    </Suspense>
   );
 };
 

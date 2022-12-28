@@ -25,16 +25,17 @@ const Login = (props: PropsTypes) => {
     <group position={position} rotation={rotation}>
       <Input
         width={width}
-        labelParams={{ label: "Username", fontSize: 0.07 }}
-        textParams={{ fontSize: 0.0825, color: "black", type: "text" }}
+        type="text"
+        labelProps={{ label: "Username" }}
         padding={[0.015, 0.25]}
       />
 
       <Input
         width={width}
         position={[0, -0.3, 0]}
-        labelParams={{ label: "Password", fontSize: 0.07 }}
-        textParams={{ fontSize: 0.0825, color: "black", type: "password" }}
+        type="password"
+        labelProps={{ label: "Password" }}
+        textProps={{ fontSize: 0.0825, color: "black" }}
         padding={[0.015, 0.25]}
       />
 

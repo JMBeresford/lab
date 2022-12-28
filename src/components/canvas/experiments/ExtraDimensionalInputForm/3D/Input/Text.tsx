@@ -1,4 +1,4 @@
-import { Mask, Text as TextImpl, useMask } from "@react-three/drei";
+import { Html, Mask, Text as TextImpl, useMask } from "@react-three/drei";
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import {
   Ref,
@@ -7,482 +7,351 @@ import {
   useState,
   useRef,
   useCallback,
+  ChangeEvent,
+  FocusEvent,
   useEffect,
-  MutableRefObject,
+  forwardRef,
+  RefObject,
 } from "react";
-import { BufferGeometry, Group, Material, Mesh, Vector3 } from "three";
+import { BufferGeometry, Group, Material, Mesh } from "three";
 import { damp } from "three/src/math/MathUtils";
-import { TextParamsTypes } from ".";
+import { TroikaTextProps } from ".";
 import { getCaretAtPoint } from "troika-three-text";
 
-const tempVec = new Vector3();
-
-type PropTypes = TextParamsTypes & {
-  active: boolean;
+export type TextProps = {
+  onChange?: (e: ChangeEvent) => void;
   width: number;
   height: number;
   padding: [number, number];
-};
+  type: "text" | "password";
+} & TroikaTextProps;
 
-const Text = (props: PropTypes) => {
-  const { fontSize, font, color, active, padding, width, height, type } = props;
-  const ref: Ref<Mesh<BufferGeometry, Material>> = useRef();
-  const groupRef: Ref<Group> = useRef();
-  const caretRef: Ref<Mesh<BufferGeometry, Material>> = useRef();
-  const stencil = useMask(1);
-
-  // STATE
-  const clock = useThree((s) => s.clock);
-  const time: MutableRefObject<number> = useRef(0);
-  const overflowAmount: MutableRefObject<number> = useRef(0);
-  const [content, setContent]: [string, any] = useState("");
-  const [caret, setCaret]: [number, any] = useState(1);
-  const [selectionStart, setSelectionStart]: [number, any] = useState(0);
-  const [renderInfo, setRenderInfo] = useState(null);
-
-  const caretPositions: number[] = useMemo(() => {
-    if (!renderInfo?.caretPositions) return [];
-
-    let lastCaret =
-      renderInfo.caretPositions[renderInfo.caretPositions.length - 2];
-
-    const caretPositions = [
-      ...renderInfo.caretPositions.filter(
-        (_: any, idx: number) => idx % 3 === 0
-      ),
-    ];
-
-    caretPositions.push(lastCaret);
-    return caretPositions;
-  }, [renderInfo]);
-
-  // EVENTS
-  const handleSync = useCallback(
-    (text: any) => {
-      setRenderInfo(text.textRenderInfo);
-
-      let bbox = text.geometry.boundingBox;
-      if (bbox) {
-        let w = Math.abs(bbox.max.x - bbox.min.x);
-
-        if (w > width) {
-          overflowAmount.current = w - width + padding[0] * width * 2;
-          if (caret === caretPositions.length) {
-            groupRef.current.position.x = -overflowAmount.current;
-          }
-        }
-      }
-    },
-    [width, caret, caretPositions, padding]
-  );
-
-  const handleKeyPress = useCallback(
-    (e: KeyboardEvent) => {
-      e.stopPropagation();
-      if (!active || e.ctrlKey || e.altKey || e.metaKey) return;
-
-      let part1: string, part2: string;
-
-      let left = caret <= selectionStart ? caret : selectionStart;
-      let right = caret <= selectionStart ? selectionStart : caret;
-
-      if (caret !== selectionStart) {
-        part1 = content.slice(0, left);
-        part2 = content.slice(right);
-      } else {
-        part1 = content.slice(0, caret);
-        part2 = content.slice(caret);
-      }
-
-      let newContent = part1 + e.key + part2;
-
-      setContent(newContent);
-
-      if (caret > selectionStart) {
-        setCaret(selectionStart + 1);
-        setSelectionStart((cur: number) => cur + 1);
-      } else {
-        setCaret((cur: number) => {
-          let c = Math.min(cur + 1, newContent.length);
-          setSelectionStart(c);
-          return c;
-        });
-      }
-    },
-    [content, caret, active, selectionStart]
-  );
-
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (!active) return;
-      e.stopPropagation();
-
-      switch (e.key) {
-        case "Backspace": {
-          if (!content) return;
-          let part1: string, part2: string;
-
-          let left = caret <= selectionStart ? caret : selectionStart;
-          let right = caret <= selectionStart ? selectionStart : caret;
-
-          if (caret !== selectionStart) {
-            part1 = content.slice(0, left);
-            part2 = content.slice(right);
-          } else {
-            part1 = content.slice(0, Math.max(caret - 1, 0));
-            part2 = content.slice(caret);
-          }
-
-          if (overflowAmount.current > 0) {
-            // text clipped by mask, make sure to translate with caret pos
-            let cx = caretRef.current.getWorldPosition(tempVec).x;
-            let shift = Math.abs(
-              caretPositions[caret] - caretPositions[Math.max(caret - 1, 0)]
-            );
-
-            if (cx < -(width / 2 - padding[0] * width * 2)) {
-              groupRef.current.position.x = Math.min(
-                shift + groupRef.current.position.x,
-                0
-              );
-            }
-          }
-
-          setContent(part1 + part2);
-          setCaret((cur: number) => {
-            let c = caret === selectionStart ? Math.max(cur - 1, 0) : left;
-            setSelectionStart(c);
-            return c;
-          });
-          break;
-        }
-        case "Delete": {
-          let part1: string, part2: string;
-
-          let left = caret <= selectionStart ? caret : selectionStart;
-          let right = caret <= selectionStart ? selectionStart : caret;
-
-          if (caret !== selectionStart) {
-            part1 = content.slice(0, left);
-            part2 = content.slice(right);
-
-            setCaret(left);
-            setSelectionStart(left);
-          } else {
-            part1 = content.slice(0, caret);
-            part2 = content.slice(caret + 1);
-          }
-
-          setContent(part1 + part2);
-          break;
-        }
-        case "ArrowLeft": {
-          if (e.shiftKey) {
-            setCaret((cur: number) => Math.max(cur - 1, 0));
-          } else {
-            if (selectionStart > caret) {
-              setSelectionStart(caret);
-            } else if (caret > selectionStart) {
-              setCaret(selectionStart);
-            } else {
-              setCaret((cur: number) => {
-                let c = Math.max(cur - 1, 0);
-                setSelectionStart(c);
-                return c;
-              });
-            }
-          }
-
-          if (overflowAmount.current > 0) {
-            // text clipped by mask, make sure to translate with caret pos
-            let cx = caretRef.current.getWorldPosition(tempVec).x;
-            let shift = Math.abs(
-              caretPositions[caret] - caretPositions[Math.max(caret - 1, 0)]
-            );
-
-            if (cx < -(width / 2 - padding[0] * width * 2)) {
-              groupRef.current.position.x = Math.min(
-                shift + groupRef.current.position.x,
-                0
-              );
-            }
-          }
-          break;
-        }
-        case "ArrowRight": {
-          if (e.shiftKey) {
-            setCaret((cur: number) => Math.min(cur + 1, content.length));
-          } else {
-            if (selectionStart < caret) {
-              setSelectionStart(caret);
-            } else if (caret < selectionStart) {
-              setCaret(selectionStart);
-            } else {
-              setCaret((cur: number) => {
-                let c = Math.min(cur + 1, content.length);
-                setSelectionStart(c);
-                return c;
-              });
-            }
-          }
-
-          if (overflowAmount.current > 0) {
-            // text clipped by mask, make sure to translate with caret pos
-            let cx = caretRef.current.getWorldPosition(tempVec).x;
-            let shift = Math.abs(
-              caretPositions[caret] - caretPositions[Math.max(caret - 1, 0)]
-            );
-
-            if (cx > width / 2 - padding[0] * width * 2) {
-              groupRef.current.position.x = Math.max(
-                groupRef.current.position.x - shift,
-                -overflowAmount.current
-              );
-            }
-          }
-          break;
-        }
-        default: {
-          // console.log(e.key);
-          break;
-        }
-      }
-
-      time.current = clock.elapsedTime;
-    },
-    [
-      content,
-      caret,
-      clock,
-      active,
-      selectionStart,
-      caretPositions,
+const Text = forwardRef(
+  (props: TextProps, ref: RefObject<HTMLInputElement>) => {
+    const {
+      fontSize,
+      font,
+      color,
       padding,
       width,
-    ]
-  );
+      height,
+      type,
+      onChange,
+      ...restProps
+    } = props;
+    const localRef = useRef<HTMLInputElement>();
+    const domRef = ref || localRef;
+    const textRef = useRef<Mesh<BufferGeometry, Material>>();
+    const groupRef = useRef<Group>();
+    const caretRef = useRef<Mesh<BufferGeometry, Material>>();
+    const stencil = useMask(1);
 
-  const handlePointerDown = useCallback(
-    (e: ThreeEvent<PointerEvent>) => {
-      e.stopPropagation();
-      time.current = clock.elapsedTime;
-      if (!renderInfo || !content || !ref.current) return;
+    // STATE
+    const clock = useThree((s) => s.clock);
+    const time = useRef<number>(0);
+    const [active, setActive] = useState<boolean>(false);
+    const [content, setContent] = useState<string>("");
+    const [caret, setCaret] = useState<number>(0);
+    const [selection, setSelection] = useState<[number, number]>([0, 0]);
+    const [renderInfo, setRenderInfo] = useState(null);
 
-      let p = ref.current.worldToLocal(e.point);
-      let c = getCaretAtPoint(renderInfo, p.x, p.y);
-      setCaret(c.charIndex);
-      setSelectionStart(c.charIndex);
-    },
-    [renderInfo, content, clock]
-  );
+    const caretPositions: number[] = useMemo(() => {
+      if (!renderInfo?.caretPositions) return [0];
 
-  const handlePointerMove = useCallback(
-    (e: ThreeEvent<PointerEvent>) => {
-      e.stopPropagation();
-      if (!renderInfo || !content || !ref.current) return;
+      let lastCaret =
+        renderInfo.caretPositions[renderInfo.caretPositions.length - 2];
 
-      if (!(e.buttons === 1 || e.buttons === 3)) return;
+      const caretPositions = [
+        ...renderInfo.caretPositions.filter(
+          (_: any, idx: number) => idx % 3 === 0
+        ),
+      ];
 
-      let p = ref.current.worldToLocal(e.point);
-      let c = getCaretAtPoint(renderInfo, p.x, p.y);
-      setCaret(c.charIndex);
+      caretPositions.push(lastCaret);
+      return caretPositions;
+    }, [renderInfo]);
 
-      if (overflowAmount.current > 0) {
-        if (caret > selectionStart) {
-          // text clipped by mask, make sure to translate with caret pos
-          let cx = caretRef.current.getWorldPosition(tempVec).x;
-          let shift = Math.abs(
-            caretPositions[caret] - caretPositions[Math.max(caret - 1, 0)]
-          );
-
-          if (cx > width / 2 - padding[0] * width * 2) {
-            groupRef.current.position.x = Math.max(
-              groupRef.current.position.x - shift,
-              -overflowAmount.current
-            );
-          }
-        } else if (caret < selectionStart) {
-          // text clipped by mask, make sure to translate with caret pos
-          let cx = caretRef.current.getWorldPosition(tempVec).x;
-          let shift = Math.abs(
-            caretPositions[caret] - caretPositions[Math.max(caret - 1, 0)]
-          );
-
-          if (cx < -(width / 2 - padding[0] * width * 2)) {
-            groupRef.current.position.x = Math.min(
-              shift + groupRef.current.position.x,
-              0
-            );
-          }
-        }
-      }
-
-      time.current = clock.elapsedTime;
-    },
-    [
-      renderInfo,
-      content,
-      clock,
-      selectionStart,
-      caret,
-      caretPositions,
-      padding,
-      width,
-    ]
-  );
-
-  const handleCopy = useCallback(
-    (e: ClipboardEvent) => {
-      e.stopPropagation();
-      if (!active) return;
-
-      let selection =
-        caret < selectionStart
-          ? content.slice(caret, selectionStart)
-          : content.slice(selectionStart, caret);
-
-      e.clipboardData.setData("text/plain", selection);
-      e.preventDefault();
-    },
-    [caret, selectionStart, content, active]
-  );
-
-  const handlePaste = useCallback(
-    (e: ClipboardEvent) => {
-      e.stopPropagation();
-      if (!active) return;
-
-      let part1: string, part2: string;
-
-      let left = caret <= selectionStart ? caret : selectionStart;
-      let right = caret <= selectionStart ? selectionStart : caret;
-
-      if (caret !== selectionStart) {
-        part1 = content.slice(0, left);
-        part2 = content.slice(right);
-
-        setCaret(left);
-        setSelectionStart(left);
-      } else {
-        part1 = content.slice(0, caret);
-        part2 = content.slice(caret);
-      }
-
-      let paste = e.clipboardData.getData("text");
-
-      if (paste) {
-        setContent(part1 + paste + part2);
-        setCaret((cur: number) => {
-          let c = cur + paste.length;
-          setSelectionStart(c);
-          return c;
-        });
-      }
-    },
-    [caret, content, active, selectionStart]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keypress", handleKeyPress);
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("paste", handlePaste);
-    document.addEventListener("copy", handleCopy);
-
-    return () => {
-      document.removeEventListener("keypress", handleKeyPress);
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("paste", handlePaste);
-      document.removeEventListener("copy", handleCopy);
+    // EVENTS
+    const handleSync = (text: any) => {
+      if (text) setRenderInfo(text.textRenderInfo);
     };
-  }, [handleKeyPress, handleKeyDown, handlePaste, handleCopy]);
 
-  useEffect(() => {
-    if (!active) {
-      setSelectionStart(caret);
-    }
-  }, [active, caret]);
+    const handleFocus = (e: FocusEvent) => {
+      e.nativeEvent.preventDefault();
+      setActive(true);
+    };
 
-  useFrame((_, delta) => {
-    if (!caretRef.current) return;
+    const handleBlur = (e: FocusEvent) => {
+      setSelection([0, 0]);
+      setActive(false);
+    };
 
-    let t = (clock.elapsedTime - time.current) % 2;
-    let opacity = t <= 1.25 ? 1 : 0;
+    const handleSelect = useCallback(
+      (e) => {
+        const { selectionStart, selectionEnd } = e.target;
 
-    caretRef.current.material.opacity = damp(
-      caretRef.current.material.opacity,
-      opacity,
-      24,
-      delta
+        if (selectionStart === selectionEnd) {
+          setCaret(selectionStart);
+        } else {
+          setCaret(null);
+        }
+
+        setSelection([selectionStart, selectionEnd]);
+        time.current = clock.elapsedTime;
+      },
+      [clock]
     );
-  });
 
-  return (
-    <group>
-      <Mask id={1} onPointerDown={handlePointerDown}>
-        <planeGeometry args={[width, height]} />
-      </Mask>
+    const handleChange = useCallback(
+      (e: ChangeEvent<HTMLInputElement>) => {
+        setContent(e.target.value);
+        onChange && onChange(e);
+      },
+      [onChange]
+    );
 
-      <group position={[-width / 2 + padding[0] * width, 0, 0]}>
-        <group ref={groupRef}>
-          <Suspense fallback={null}>
-            <TextImpl
-              ref={ref}
-              onSync={handleSync}
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              whiteSpace="overflowWrap"
-              fontSize={fontSize}
-              font={font}
-              anchorX="left"
-              anchorY="top-baseline"
-              letterSpacing={type === "password" ? 0.1 : 0}
-              depthOffset={0.2}
-              maxWidth={width - padding[0] * width * 2}
-              position-y={-renderInfo?.capHeight / 2}
-            >
-              {type === "password" ? "•".repeat(content.length) : content}
-              <meshBasicMaterial
-                color={color}
-                {...stencil}
-                depthWrite={false}
-              />
-            </TextImpl>
-          </Suspense>
+    const handleClick = useCallback(
+      (e: ThreeEvent<MouseEvent>) => {
+        if (!active) {
+          domRef.current.focus();
+        }
 
-          <mesh
-            ref={caretRef}
-            position={[content ? caretPositions[caret] : 0, 0, 0]}
-            visible={active}
-          >
-            <planeGeometry args={[0.005, fontSize]} />
-            <meshBasicMaterial color={color} transparent depthWrite={false} />
-          </mesh>
+        if (e.detail === 3) {
+          domRef.current.select();
+        }
+      },
+      [active, domRef]
+    );
 
-          <group
-            position={[
-              (caretPositions[caret] + caretPositions[selectionStart]) / 2,
-              0,
-              0,
-            ]}
-          >
+    const handleDoubleClick = useCallback(
+      (e: ThreeEvent<MouseEvent>) => {
+        function isWhitespace(str: string): boolean {
+          return str && str.trim() === "";
+        }
+
+        let start: number = 0,
+          end: number = content.length;
+
+        if (type === "password") {
+          domRef.current.select();
+          return;
+        }
+
+        for (let i = caret; i < content.length; i++) {
+          if (isWhitespace(content[i])) {
+            end = i;
+            break;
+          }
+        }
+
+        for (let i = caret; i > 0; i--) {
+          if (isWhitespace(content[i])) {
+            start = i > 0 ? i + 1 : i;
+            break;
+          }
+        }
+
+        domRef.current.setSelectionRange(start, end, "none");
+      },
+      [caret, content, type, domRef]
+    );
+
+    const handlePointerDown = useCallback(
+      (e: ThreeEvent<PointerEvent>) => {
+        time.current = clock.elapsedTime;
+
+        if (!renderInfo || !content) {
+          return;
+        }
+
+        let point = textRef.current.worldToLocal(e.point);
+        let idx = getCaretAtPoint(renderInfo, point.x, point.y).charIndex;
+        setSelection([idx, idx]);
+        setCaret(idx);
+        domRef.current.setSelectionRange(idx, idx, "none");
+      },
+      [domRef, renderInfo, clock, content]
+    );
+
+    const handlePointerMove = useCallback(
+      (e: ThreeEvent<PointerEvent>) => {
+        let buttons = e.buttons;
+
+        // left click not held (i.e. not dragging)
+        let dragging = buttons === 1 || buttons === 3;
+        if (!dragging || !renderInfo || !content) return;
+
+        let point = textRef.current.worldToLocal(e.point);
+        let idx = getCaretAtPoint(renderInfo, point.x, point.y).charIndex;
+        let start: number, end: number, dir: "forward" | "backward" | "none";
+
+        if (idx < caret) {
+          start = idx;
+          end = caret;
+          dir = "backward";
+        } else if (idx > caret) {
+          start = caret;
+          end = idx;
+          dir = "forward";
+        } else {
+          start = end = idx;
+          dir = "none";
+        }
+
+        setSelection([start, end]);
+        domRef.current.setSelectionRange(start, end, dir);
+      },
+      [domRef, renderInfo, caret, content]
+    );
+
+    // EFFECTS
+    useEffect(() => {
+      let pos: number;
+      let _width = width - padding[0] * width * 2;
+      let [selectionStart, selectionEnd] = [
+        caretPositions[selection[0]] + groupRef.current.position.x,
+        caretPositions[selection[1]] + groupRef.current.position.x,
+      ];
+
+      let left = 0;
+      let right = _width;
+
+      if (caret !== null) {
+        pos = caretPositions[caret] + groupRef.current.position.x;
+        if (caret > 0) {
+          // ensure there is always a character visible on the left
+          left += caretPositions[caret] - caretPositions[caret - 1];
+        }
+        if (pos === undefined || Number.isNaN(pos)) return;
+      } else {
+        let dir = domRef.current.selectionDirection;
+        if (selectionStart < left && dir === "backward") {
+          pos = selectionStart;
+        } else if (selectionEnd > right && dir === "forward") {
+          pos = selectionEnd;
+        }
+      }
+
+      if (pos > right) {
+        let dx = pos - right;
+        groupRef.current.position.x -= dx;
+      } else if (pos < left) {
+        let dx = left - pos;
+        groupRef.current.position.x += dx;
+      }
+    }, [width, padding, caret, caretPositions, selection, domRef]);
+
+    useFrame((_, delta) => {
+      if (!caretRef.current) return;
+
+      let t = (clock.elapsedTime - time.current) % 2;
+      let opacity = t <= 1.25 ? 1 : 0;
+
+      caretRef.current.material.opacity = damp(
+        caretRef.current.material.opacity,
+        opacity,
+        24,
+        delta
+      );
+    });
+
+    return (
+      <group>
+        <Mask
+          id={1}
+          position-z={0.01}
+          onClick={handleClick}
+          onDoubleClick={handleDoubleClick}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+        >
+          <planeGeometry args={[width, height]} />
+        </Mask>
+
+        <Html distanceFactor={3}>
+          <input
+            ref={domRef}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            onSelect={handleSelect}
+            style={{
+              position: "absolute",
+              left: "-1000vw",
+              transform: "translateX(-50%)",
+              width: `${10 * width}em`,
+              touchAction: "none",
+              pointerEvents: "none",
+              opacity: 0,
+            }}
+          />
+        </Html>
+
+        <group position={[-width / 2 + padding[0] * width, 0, 0]}>
+          <group ref={groupRef}>
+            <Suspense fallback={null}>
+              <TextImpl
+                ref={textRef}
+                onSync={handleSync}
+                fontSize={fontSize}
+                font={font}
+                anchorX="left"
+                anchorY="top-baseline"
+                // @ts-ignore
+                whiteSpace="nowrap"
+                letterSpacing={type === "password" ? 0.1 : 0}
+                depthOffset={0.2}
+                position-y={-renderInfo?.capHeight / 2}
+                {...restProps}
+              >
+                {type === "password" ? "•".repeat(content.length) : content}
+                <meshBasicMaterial
+                  color={color}
+                  {...stencil}
+                  depthWrite={false}
+                />
+              </TextImpl>
+            </Suspense>
+
             <mesh
-              scale-x={Math.abs(
-                caretPositions[caret] - caretPositions[selectionStart]
-              )}
+              ref={caretRef}
+              position={[content ? caretPositions[caret || 0] : 0, 0, 0]}
+              visible={active && caret !== null}
             >
-              <planeGeometry args={[1, fontSize]} />
-              <meshBasicMaterial
-                color="blue"
-                transparent
-                opacity={0.25}
-                depthWrite={false}
-              />
+              <planeGeometry args={[0.005, fontSize]} />
+              <meshBasicMaterial color={color} transparent depthWrite={false} />
             </mesh>
+
+            <group
+              position={[
+                (caretPositions[selection[0]] + caretPositions[selection[1]]) /
+                  2,
+                0,
+                0,
+              ]}
+            >
+              <mesh
+                scale-x={Math.abs(
+                  caretPositions[selection[0]] - caretPositions[selection[1]]
+                )}
+              >
+                <planeGeometry args={[1, fontSize]} />
+                <meshBasicMaterial
+                  color="blue"
+                  transparent
+                  opacity={0.25}
+                  depthWrite={false}
+                  {...stencil}
+                />
+              </mesh>
+            </group>
           </group>
         </group>
       </group>
-    </group>
-  );
-};
+    );
+  }
+);
+
+Text.displayName = "Text";
 
 export default Text;
