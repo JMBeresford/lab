@@ -2,8 +2,13 @@ import { Text, useCursor } from "@react-three/drei";
 import { Euler, Vector3 } from "@react-three/fiber";
 import { useState } from "react";
 import { animated, useSpring } from "@react-spring/three";
-import Input from "../Input";
-import { DoubleSide } from "three";
+
+/**
+ * EXPERIMENT IS NOW A STANDALONE PACKAGE FOUND HERE:
+ * https://github.com/JMBeresford/r3f-input
+ */
+import { Input } from "@jberesford/r3f-input";
+import { useControls } from "leva";
 
 type PropsTypes = {
   position?: Vector3;
@@ -19,6 +24,10 @@ const Login = (props: PropsTypes) => {
     buttonSize: hovered ? 1.025 : 1,
   });
 
+  const { fontSize } = useControls("text", {
+    fontSize: { value: 0.0825, min: 0.01, max: 0.6, step: 0.01 },
+  });
+
   useCursor(hovered);
 
   return (
@@ -26,17 +35,16 @@ const Login = (props: PropsTypes) => {
       <Input
         width={width}
         type="text"
-        labelProps={{ label: "Username" }}
-        padding={[0.015, 0.25]}
+        label="Username"
+        textProps={{ fontSize }}
       />
 
       <Input
         width={width}
         position={[0, -0.3, 0]}
         type="password"
-        labelProps={{ label: "Password" }}
-        textProps={{ fontSize: 0.0825, color: "black" }}
-        padding={[0.015, 0.25]}
+        label="Password"
+        textProps={{ fontSize }}
       />
 
       <group

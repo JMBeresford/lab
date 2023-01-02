@@ -12,7 +12,10 @@ const Scene = () => {
   const camRef: Ref<Camera> = useRef();
 
   useEffect(() => {
-    useStore.setState({ experimentLoaded: true });
+    useStore.setState({
+      experimentLoaded: true,
+      hideLeva: !useStore.getState().debug,
+    });
   }, []);
 
   useFrame(({ mouse }, delta) => {

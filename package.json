@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.17.0",
+    "@jberesford/r3f-input": "^1.1.2",
     "@react-spring/three": "^9.6.1",
     "@react-three/drei": "^9.47.1",
     "@react-three/fiber": "^8.9.1",
