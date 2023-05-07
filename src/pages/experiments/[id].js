@@ -37,8 +37,8 @@ const HUD = ({ experiment }) => {
           style={{ color: experiment.hudColor, opacity: showcase ? 0 : 1 }}
         >
           <div className="back">
-            <Link href={"/"}>
-              <a style={{ color: experiment.hudColor }}>back to experiments</a>
+            <Link href={"/"} style={{ color: experiment.hudColor }}>
+              back to experiments
             </Link>
             <div
               className="backdrop"
@@ -86,7 +86,7 @@ const HUD = ({ experiment }) => {
 const Experiment = ({ experiment }) => {
   const Scene = dynamic(
     () => import(`@/components/canvas/experiments/${experiment.page}/Scene`),
-    { ssr: false, suspense: true, loading: null }
+    { ssr: false }
   );
 
   const DOM = dynamic(

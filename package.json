@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=14"
+    "node": ">=16.0"
   },
   "scripts": {
     "eslint": "next lint --fix --dir src",
@@ -22,11 +22,11 @@
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@jberesford/r3f-input": "^1.1.2",
     "@react-spring/three": "^9.6.1",
-    "@react-three/drei": "^9.47.1",
-    "@react-three/fiber": "^8.9.1",
+    "@react-three/drei": "^9.65.5",
+    "@react-three/fiber": "^8.12.2",
     "@react-three/flex": "^1.0.1",
     "@react-three/postprocessing": "^2.7.0",
-    "@types/three": "^0.146.0",
+    "@types/three": "^0.150.2",
     "babel-plugin-glsl": "^1.0.0",
     "glsl-blend": "^1.0.3",
     "glsl-inverse": "^1.0.0",
@@ -34,15 +34,16 @@
     "glsl-random": "^0.0.5",
     "gsap": "^3.10.4",
     "leva": "^0.9.25",
-    "next": "^12.1.6",
+    "next": "^13.3.1",
     "postprocessing": "^6.29.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-spring": "^9.6.1",
     "sass": "^1.51.0",
+    "three": "^0.151.3",
     "troika-three-text": "^0.47.1",
     "typescript": "4.5",
-    "zustand": "^3.7.2"
+    "zustand": "^4.3.7"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^12.0.10",
