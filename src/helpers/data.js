@@ -9,6 +9,13 @@ import placeholderImage from "@/img/icon.png";
 export default function getData() {
   return [
     {
+      name: "Work From Home",
+      page: "WorkFromHome",
+      image: placeholderImage.src,
+      hudColor: "#ccccca",
+      themeColor: "#5e3e5e",
+    },
+    {
       name: "Extra Dimensional Input Form",
       page: "ExtraDimensionalInputForm",
       image: extradimensionalinputformImage.src,
