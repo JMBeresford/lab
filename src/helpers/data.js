@@ -4,14 +4,15 @@ import chaossphereImage from "../../public/img/experiments/chaossphere.png";
 import skywalkerImage from "../../public/img/experiments/skywalker.png";
 import srankjutsuImage from "../../public/img/experiments/srankjutsu.png";
 import extradimensionalinputformImage from "../../public/img/experiments/extradimensionalinputform.png";
-import placeholderImage from "@/img/icon.png";
+import workfromhomeImage from "../../public/img/experiments/workfromhome.png";
+import _placeholderImage from "@/img/icon.png";
 
 export default function getData() {
   return [
     {
       name: "Work From Home",
       page: "WorkFromHome",
-      image: placeholderImage.src,
+      image: workfromhomeImage.src,
       hudColor: "#ccccca",
       themeColor: "#5e3e5e",
     },
